@@ -45,6 +45,7 @@ Owner: Windows session (single writer). Mac proposes changes in `STATUS_M.md`. N
 - 2026-10-17 14:30 | D-20 | `n_eff` is display-only in v1. `WaymarkAlertPolicy` does not require a minimum `n_eff`. | leader
 - 2026-10-17 14:30 | D-21 | Ack the D-08 proposal: delete `AritroProfile.imageset`, use the fallback symbol. Check no UI test references the photo. | leader
 - 2026-10-17 14:30 | D-22 | `make uitest` runs twice: at the UIUC location (`SIM_LAT=40.1140 SIM_LON=-88.2249`) as the like-for-like gate, and at Seattle for information only. | leader
+- 2026-10-17 14:35 | D-23 | Windows-session commits are authored as Yousef with the GitHub noreply address, no Claude co-author trailer, so they show as `haddadyousef`. Commits before this one (ce106c1, 95480f3) keep their old author fields. | Yousef
 
 ## Pending human inputs (fill in when answered)
 
