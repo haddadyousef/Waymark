@@ -5,8 +5,8 @@
 #   ios/scripts/waymark_g0.sh check      toolchain + repo state (fast)
 #   ios/scripts/waymark_g0.sh baseline   make test on main (before our rename), the "is it us?" gate
 #   ios/scripts/waymark_g0.sh rename     switch to waymark/g0-rename; make test, make gen, make sim
-#   ios/scripts/waymark_g0.sh uitest     make sim17 if needed; make uitest at UIUC, then at Seattle
-#   ios/scripts/waymark_g0.sh device     make run on the phone (needs TEAM / DEVICE in ios/local.mk)
+#   ios/scripts/waymark_g0.sh uitest     on main: make sim17 if needed; make uitest at UIUC, then at Seattle
+#   ios/scripts/waymark_g0.sh device     on main: build, install, launch on the phone (needs ios/local.mk)
 #
 # Every step: `cmd > log 2>&1; echo "exit=$?" >> log`, judged by that exit code, never by `tail`
 # (plan 7.2, design doc §0.4). The summary at the end prints only the exit codes and log paths.
@@ -60,14 +60,14 @@ case "$STAGE" in
     run g0-rename-sim make sim
     ;;
   uitest)
-    git checkout -q waymark/g0-rename || exit 1
+    git checkout -q main && git pull -q --ff-only origin main || exit 1
     if ! xcrun simctl list devices | grep -q "iPhone 17 Pro Max"; then run g0-sim17 make sim17; fi
     run g0-uitest-uiuc make uitest SIM_LAT=40.1140 SIM_LON=-88.2249
     xcrun simctl shutdown all >/dev/null 2>&1 || true
     run g0-uitest-seattle make uitest
     ;;
   device)
-    git checkout -q waymark/g0-rename || exit 1
+    git checkout -q main && git pull -q --ff-only origin main || exit 1
     test -f local.mk || { cp local.mk.example local.mk; echo "Created ios/local.mk — fill in TEAM and DEVICE (make devices), then re-run: $0 device"; exit 1; }
     run g0-devices make devices
     run g0-device-gen env WATCH=0 scripts/gen.sh || { finish; exit 1; }
