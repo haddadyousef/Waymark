@@ -15,7 +15,7 @@
 //       point is to catch the walker who is on the ground next to it.
 //
 //  Dropping any one stage is what makes a fall detector cry wolf, and a family that learns to
-//  ignore OpenCane's alerts is worse than no alerts.
+//  ignore Waymark's alerts is worse than no alerts.
 //
 //  ⚠ **These thresholds are educated guesses, not measurements.** Nothing in this file has been
 //  validated against a real cane going over — AGENTS.md "evidence before claims" is not satisfied

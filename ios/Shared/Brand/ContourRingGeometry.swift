@@ -2,7 +2,7 @@
 //  ContourRingGeometry.swift
 //  CaneKit (app + widget extension)
 //
-//  The OpenCane contour-ring drawing, shared: the ring path math the voice tile animates
+//  The Waymark contour-ring drawing, shared: the ring path math the voice tile animates
 //  (`ContourRings` in ios/CaneKit/UI/VoiceTile.swift, Step 58) and a static few-ring brand mark
 //  (`OpenCaneMark`) that the Dynamic Island, lock-screen card, accessory widget and Control Center
 //  control draw (Step 64).
@@ -87,7 +87,7 @@ nonisolated enum ContourRingGeometry {
     }
 }
 
-/// The OpenCane brand mark: a few static contour rings around a clear centre, from the voice tile's
+/// The Waymark brand mark: a few static contour rings around a clear centre, from the voice tile's
 /// ring math. A `Shape`, so callers `.stroke` it in any tint (the island tints it by alert level).
 /// Used by `NavLiveActivity` (compact leading, minimal, expanded, lock screen) and the Step 64
 /// accessory widget / control.

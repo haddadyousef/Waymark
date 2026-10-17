@@ -613,7 +613,7 @@ def pull_latest() -> Path:
                      "Is the phone plugged in, unlocked and trusted? (xcrun devicectl list devices)")
 
     listing = run(["xcrun", "devicectl", "device", "info", "files", "--device", device,
-                   "--domain-type", "appDataContainer", "--domain-identifier", "com.aritro.canekit",
+                   "--domain-type", "appDataContainer", "--domain-identifier", os.environ.get("WAYMARK_BUNDLE", "com.example.waymark-dev.waymark"),
                    "--subdirectory", "Documents"])
     # Names embed a zero-padded ISO timestamp, so the lexicographic max is the newest.
     names = sorted(set(re.findall(r"canekit-[0-9T:-]+Z\.jsonl", listing)))
@@ -621,7 +621,7 @@ def pull_latest() -> Path:
         sys.exit("no trip logs on the phone")
     dest = Path(tempfile.mkdtemp(prefix="cue_audit_")) / names[-1]
     run(["xcrun", "devicectl", "device", "copy", "from", "--device", device,
-         "--domain-type", "appDataContainer", "--domain-identifier", "com.aritro.canekit",
+         "--domain-type", "appDataContainer", "--domain-identifier", os.environ.get("WAYMARK_BUNDLE", "com.example.waymark-dev.waymark"),
          "--source", f"Documents/{names[-1]}", "--destination", str(dest)])
     if not dest.exists() or dest.stat().st_size == 0:
         sys.exit(f"pulled {names[-1]} but {dest} is missing or empty")
@@ -788,7 +788,7 @@ CLOSE_INTERVAL_S = 4.0        # CueSpeechPolicy.closeInterval
 # Lines Step 68 no longer speaks at route start, and the two replaced wordings.
 STEP68_DROPPED = {"GPS weak. Waypoint cues paused until it recovers.", "GPS back.",
                   "No headphones. Beacon paused until AirPods connect.",
-                  "Watch not reachable. Open OpenCane on the watch.",
+                  "Watch not reachable. Open Waymark on the watch.",
                   "Camera too steep for head-height cover. Torso obstacles only."}
 STEP68_REWORDED = {"Screen locked. Obstacle warnings are paused until you unlock.":
                    "Screen locked. Obstacle warnings off."}

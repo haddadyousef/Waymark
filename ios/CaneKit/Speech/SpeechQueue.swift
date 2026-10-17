@@ -88,7 +88,7 @@
 //      name — and a dropped line goes to `onSuppressed`, never to the queue. Every other line is
 //      `.normal` and fails open.
 //    · Voice hold (Step 30, device report "instructions kept playing over the dictation"): while
-//      the walker talks to OpenCane, lines below `.safety` wait in the queue (`setVoiceHold`).
+//      the walker talks to Waymark, lines below `.safety` wait in the queue (`setVoiceHold`).
 //    · Step 31's `say(immediate: true)` ("answers skip the fetch") is removed (Step 54): it was
 //      the single biggest source of the voice flipping line by line on the first mounted walk.
 //    · `onSpeakingChanged` (Step 55) tells `VoiceInputEngine` when a line starts and stops, so the
@@ -363,7 +363,7 @@ final class SpeechQueue {
     /// True between an audio-session interruption's `.began` and `.ended` (call, Siri).
     /// While true `say` / `sayAgain` only enqueue and `lineEnded` does not start the next line.
     @ObservationIgnored private var interrupted = false
-    /// True while the walker is talking to OpenCane (voice input listening). While true `say`
+    /// True while the walker is talking to Waymark (voice input listening). While true `say`
     /// holds every line below `.safety` in the queue instead of playing it, so route and
     /// obstacle chatter never talks over the walker's dictation — and the recogniser never
     /// hears the app's own voice in the microphone. `.safety` ("Head height.", ground hazards)
@@ -502,7 +502,7 @@ final class SpeechQueue {
         /// `SoundWatcher` ("Listen for sirens and horns", off by default); may hold the lease for
         /// a whole walk, and is the only owner that installs `onMicrophoneRouteChanged`.
         case soundRecognition
-        /// `VoiceInputEngine` push-to-talk ("Talk to OpenCane"); holds it for one utterance (≤ 10 s,
+        /// `VoiceInputEngine` push-to-talk ("Talk to Waymark"); holds it for one utterance (≤ 10 s,
         /// `UtteranceEndDetector.maxListen`) and is refused while sound recognition owns the input.
         case voiceInput
     }
@@ -683,7 +683,7 @@ final class SpeechQueue {
         let session = AVAudioSession.sharedInstance()
         guard on else {
             guard microphoneOwner == nil || microphoneOwner == owner else {
-                return .failed("Microphone is owned by another OpenCane feature.")
+                return .failed("Microphone is owned by another Waymark feature.")
             }
             stopWatchingOutputRoute()
             let leaseGeneration = microphoneLeaseGeneration
@@ -699,7 +699,7 @@ final class SpeechQueue {
             return result ?? .granted(route: Self.outputRoute(session))
         }
         if let microphoneOwner, microphoneOwner != owner {
-            return .failed("Microphone is already in use by another OpenCane feature.")
+            return .failed("Microphone is already in use by another Waymark feature.")
         }
         if microphoneOwner == owner, let route = microphoneRoute {
             return .granted(route: route.output)

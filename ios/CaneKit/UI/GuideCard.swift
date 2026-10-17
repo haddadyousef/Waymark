@@ -32,7 +32,7 @@
 //      describer line under "Where am I" must stay plain static texts too
 //      (testWhereAmIWithoutKeyReportsGracefully accepts a label containing "camera" or starting
 //      "Scene:" — no key is needed any more, so nothing matches "key").
-//  Focus order is the visual order: instruction → distance → pills → Talk to OpenCane (the tile) →
+//  Focus order is the visual order: instruction → distance → pills → Talk to Waymark (the tile) →
 //  compact row → describer text → the rest of the route controls → error line.
 //
 //  Owner / caller: `GuidePage` in ContentView.swift, which passes its `ScrollViewProxy`.
@@ -155,7 +155,7 @@ struct GuideCard: View {
     /// The microphone, the compact row under it and the describer's result, on the page ground.
     @ViewBuilder private var voiceAndActions: some View {
         VStack(alignment: .leading, spacing: CKSpacing.md) {
-            // Step 58: the voice shell's giant microphone. Its label is "Talk to OpenCane" /
+            // Step 58: the voice shell's giant microphone. Its label is "Talk to Waymark" /
             // "Listening…" / "Starting…" / "Thinking…"; the assistant's last answer
             // ("Assistant: …") is its status line.
             VoiceTile()
@@ -172,7 +172,7 @@ struct GuideCard: View {
                     CKBigButton(title: "Repeat", systemImage: "arrow.counterclockwise", layout: .tile,
                                 hint: "Says the current instruction again") { model.repeatInstruction() }
                     // `nextWaypoint()`, not `nav.next()`: one code path with the watch Next, the
-                    // crown and Siri "Next waypoint in OpenCane".
+                    // crown and Siri "Next waypoint in Waymark".
                     CKBigButton(title: "Next", systemImage: "forward.fill", role: .secondary, layout: .tile,
                                 hint: "Skips to the next instruction") { model.nextWaypoint() }
                     stopRouteButton

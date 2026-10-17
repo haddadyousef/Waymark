@@ -2,7 +2,7 @@
 //  SpeechLoadPolicy.swift
 //  CaneKitLogic
 //
-//  Decides whether optional environmental narration should enter OpenCane's shared speech
+//  Decides whether optional environmental narration should enter Waymark's shared speech
 //  channel. This is deliberately smaller than the AVFoundation queue: it only protects a walker
 //  from repeated mesh obstacle names, while route, safety, haptic-fallback and user-requested
 //  speech bypass it.

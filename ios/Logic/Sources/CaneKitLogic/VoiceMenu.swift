@@ -28,7 +28,7 @@
 //  Owner / callers: `FastPathIntentClassifier.classify` (rule 0: `match`, `verb`, `confirmation`),
 //  `ConversationCoordinator.executeAction` (`confirmationLine`, `helpLine`), `SpokenPhrases.shellLines`.
 //  Step 67: there is no launch menu. The owner, on `canekit-2026-09-13T15-48-34Z.jsonl`: "when it
-//  immediately pops up there's a lot of jargon. It should just be 'OpenCane ready'". `menuLine`,
+//  immediately pops up there's a lot of jargon. It should just be 'Waymark ready'". `menuLine`,
 //  `shortMenuLine` and `launchMenuLine(firstLaunch:)` were deleted; the only list the shell reads is
 //  `helpLine`, when the walker says "help", "menu", "options" or "seven".
 //  Tests: VoiceMenuTests.swift (10).

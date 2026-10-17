@@ -2,7 +2,7 @@
 //  GrokBotEvent.swift
 //  CaneKitLogic
 //
-//  The JSON event object OpenCane POSTs to the Grok Bot routine "OpenCane cane events"
+//  The JSON event object Waymark POSTs to the Grok Bot routine "OpenCane cane events"
 //  (folder opencane-cane-events) so a family member can be alerted. This file is the **contract**:
 //  the bot parses these exact key names, so they are pinned by tests rather than left to
 //  Codable's synthesis defaults.
@@ -61,7 +61,7 @@ public struct OpenCaneEventType: RawRepresentable, Codable, Sendable, Equatable,
     public static let familyContacts: Self = "family_contacts"
 }
 
-/// Nested `{ lat, lng }` form of a position. The flat `lat` / `lng` fields are what OpenCane
+/// Nested `{ lat, lng }` form of a position. The flat `lat` / `lng` fields are what Waymark
 /// sends; this exists because the contract accepts either and a decode must not fail on it.
 public struct OpenCaneGeo: Codable, Sendable, Equatable {
     public var lat: Double
@@ -151,7 +151,7 @@ public struct OpenCaneEvent: Codable, Sendable, Equatable {
     public var timestamp: String?
     public var lat: Double?
     public var lng: Double?
-    /// Nested alternative to `lat`/`lng`; OpenCane sends the flat pair and leaves this nil.
+    /// Nested alternative to `lat`/`lng`; Waymark sends the flat pair and leaves this nil.
     public var location: OpenCaneGeo?
     /// Horizontal accuracy, metres.
     public var accuracyM: Double?
@@ -161,7 +161,7 @@ public struct OpenCaneEvent: Codable, Sendable, Equatable {
     public var speedMps: Double?
     /// Human-readable detail. This is the line a family member effectively reads.
     public var note: String?
-    /// Alias of `note` in the contract. OpenCane sends `note`; kept so a decode round-trips.
+    /// Alias of `note` in the contract. Waymark sends `note`; kept so a decode round-trips.
     public var message: String?
     public var label: String?
     /// Who is walking ("Tejas").

@@ -23,6 +23,8 @@ ios/CaneKit/Resources/Secrets.plist
 # PlatformIO / Arduino (stretch)
 firmware/**/.pio/
 ios/local.mk
+# Waymark: per-person signing, written by ios/scripts/gen.sh from ios/local.mk
+ios/Config/Local.xcconfig
 ios/.project.phone-only.yml
 
 # Python bytecode (ios/scripts/e2e.py)

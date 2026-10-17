@@ -7,7 +7,7 @@
 //
 //  Why this exists: phone log `canekit-2026-09-13T15-48-34Z.jsonl`. The phone is gripped or clamped,
 //  and the hand holding it pressed Camera Control three times in the first four seconds (t = 1.71,
-//  2.89, 3.56, each `describe {trigger: cameraControl}`), while "OpenCane ready." was still
+//  2.89, 3.56, each `describe {trigger: cameraControl}`), while "Waymark ready." was still
 //  speaking. The walker heard two busy earcons stack up and, at 14.9 s, a scene description nobody
 //  had asked for, on top of the launch listen. A press is a real way to ask "Where am I", so it
 //  stays; it is refused only when it is almost certainly the grip, not the walker:
@@ -48,7 +48,7 @@ import Foundation
 public struct CameraControlGate: Sendable, Equatable {
 
     /// Seconds after launch during which every press is refused. [H] 5 s: the log's accidental
-    /// presses were all at 1.7–3.6 s, and "OpenCane ready." plus the listening tone take about 2 s.
+    /// presses were all at 1.7–3.6 s, and "Waymark ready." plus the listening tone take about 2 s.
     public static let launchGraceSeconds: Double = 5
 
     /// A press closer than this to the last accepted press is refused. [H] 2 s: a deliberate second

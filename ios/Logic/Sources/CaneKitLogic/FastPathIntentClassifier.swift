@@ -187,10 +187,10 @@ public enum FastPathIntentClassifier {
             return .answerStatus(aspect: .route)
         }
 
-        // 9. Status: Overall System Health ("how is OpenCane doing", "status")
+        // 9. Status: Overall System Health ("how is Waymark doing", "status")
         //    The bare "status" / "status check" / "check status" are rule 0 (`.speakStatus`) now.
         if cleaned.contains("how are you doing")
-            || cleaned.contains("how is opencane doing") || cleaned.contains("how is canekit doing")
+            || cleaned.contains("how is waymark doing") || cleaned.contains("how is opencane doing") || cleaned.contains("how is canekit doing")
             || cleaned == "is everything working" {
             return .answerStatus(aspect: .all)
         }

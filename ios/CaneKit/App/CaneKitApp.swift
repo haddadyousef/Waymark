@@ -53,13 +53,13 @@ struct CaneKitApp: App {
                 .onChange(of: scenePhase) { _, phase in
                     model.scenePhaseChanged(phase)
                 }
-                // Step 64: `opencane://talk` (lock-screen accessory widget) opens listening, like the
-                // Action button; `opencane://guide` (Live Activity tap) and anything else just open
+                // Step 64: `waymark://talk` (lock-screen accessory widget) opens listening, like the
+                // Action button; `waymark://guide` (Live Activity tap) and anything else just open
                 // the app on whatever tab was showing — no tab switch (the selected tab is
                 // `ContentView`'s private `@State`, not model state; review round 9a). Ignored until
                 // `start()` has run.
                 .onOpenURL { url in
-                    guard url.scheme == "opencane", url.host == "talk", model.started else { return }
+                    guard url.scheme == "waymark", url.host == "talk", model.started else { return }
                     model.toggleVoiceInput(source: "widget")
                 }
         }

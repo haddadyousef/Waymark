@@ -246,7 +246,7 @@ final class CaneKitUITests: XCTestCase {
         openTab("Settings")
         XCTAssertTrue(app.switches["Write trip log"].waitForExistence(timeout: 5))
         openTab("Profile")
-        XCTAssertTrue(app.switches["Share data with OpenCane cloud"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.switches["Share data with Waymark cloud"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Edit Medical ID"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Announce Medical ID"].waitForExistence(timeout: 5))
         let steps = app.descendants(matching: .any)

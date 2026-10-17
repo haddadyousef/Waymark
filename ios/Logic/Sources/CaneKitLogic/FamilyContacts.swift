@@ -6,9 +6,9 @@
 //  registration event that hands it over.
 //
 //  How the two halves fit together (bot contract, 2026-09-12):
-//    1. The walker edits the list in Settings → OpenCane POSTs one `family_contacts` event with
+//    1. The walker edits the list in Settings → Waymark POSTs one `family_contacts` event with
 //       `emails: string[]`. The bot stores the list. `send_test: true` asks it to email each
-//       address a short "you are on the OpenCane alert list" note.
+//       address a short "you are on the Waymark alert list" note.
 //    2. Cane events (fall / sos / obstacle / …) are POSTed exactly as before, unchanged. The bot
 //       looks up the saved list and Gmails whoever is on it.
 //

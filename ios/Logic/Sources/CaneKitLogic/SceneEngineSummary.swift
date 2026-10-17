@@ -52,7 +52,7 @@ public enum DescribeTrigger: String, Sendable, CaseIterable, Codable {
     case cameraControl
     /// The `CANEKIT_DESCRIBE_EVERY_WAYPOINT` automation hook (route start and every waypoint).
     case waypoint
-    /// "Ask OpenCane …" — a question about the frame, not a plain description.
+    /// "Ask Waymark …" — a question about the frame, not a plain description.
     case question
     /// The voice shell (Step 56): "where am I" / "describe" / two / three, spoken to the app itself.
     case voice
@@ -391,7 +391,7 @@ public enum SceneEngineSummary {
     /// dark" that a blind walker cannot see for themselves:
     ///   · unknown: "Light: unknown" (no ARKit estimate yet; always in the simulator)
     ///   · lit: "Light: lit (640 lux)" ("Light: lit" without a number)
-    ///   · dark, torch on by the app: "Light: dark (12 lux) · flashlight on (by OpenCane)"
+    ///   · dark, torch on by the app: "Light: dark (12 lux) · flashlight on (by Waymark)"
     ///   · dark, torch on by the walker: "Light: dark (12 lux) · flashlight on"
     ///   · dark, torch off: "Light: dark (12 lux) · flashlight off — cameras may miss things"
     /// The lux is the policy's smoothed value, rounded. Pinned by `lightRowSaysWhatTheCamerasHave`,
@@ -407,8 +407,8 @@ public enum SceneEngineSummary {
             return SceneEngineLine(text: "Light: lit\(lux)", spoken: "Light: lit\(luxSpoken).")
         case .dark:
             if f.torchOn {
-                let who = f.torchByApp ? " (by OpenCane)" : ""
-                let whoSpoken = f.torchByApp ? ", switched on by OpenCane" : ""
+                let who = f.torchByApp ? " (by Waymark)" : ""
+                let whoSpoken = f.torchByApp ? ", switched on by Waymark" : ""
                 return SceneEngineLine(text: "Light: dark\(lux) · flashlight on\(who)",
                                        spoken: "Light: dark\(luxSpoken). Flashlight on\(whoSpoken).")
             }

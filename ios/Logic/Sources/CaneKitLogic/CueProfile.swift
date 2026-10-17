@@ -2,7 +2,7 @@
 //  CueProfile.swift
 //  CaneKitLogic
 //
-//  How much OpenCane says and taps: a verbosity level (Quiet / Standard / Detailed) × a place
+//  How much Waymark says and taps: a verbosity level (Quiet / Standard / Detailed) × a place
 //  (Outdoors / Indoors), reduced to plain rules the app asks before it speaks a name or a sign or
 //  sets the head distance. Cue design v2, Step 36 (docs/cue_design_v2.md §3.3 and §3.5).
 //

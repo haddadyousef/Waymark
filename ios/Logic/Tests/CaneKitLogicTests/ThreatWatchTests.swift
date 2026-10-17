@@ -4,7 +4,7 @@
 //
 //  Pins weapon / attacker detection in vision-model text. The negative cases carry the weight:
 //  this alert emails a family that their blind relative may be being robbed, and a false one a
-//  week is exactly how a family learns to mute OpenCane.
+//  week is exactly how a family learns to mute Waymark.
 //
 
 import Foundation
@@ -79,7 +79,7 @@ import Testing
     #expect(ThreatWatch.sighting(in: "   ") == nil)
 }
 
-/// ⚠ The event quotes the camera rather than asserting a fact: OpenCane does not know there is a
+/// ⚠ The event quotes the camera rather than asserting a fact: Waymark does not know there is a
 /// gun, it knows a describer said so, and the family reading the email must be able to tell.
 @Test func theEventQuotesTheCameraAndIsCritical() throws {
     let sighting = try #require(ThreatWatch.sighting(in: "A man ahead is holding a gun."))
@@ -87,7 +87,7 @@ import Testing
 
     #expect(event.type == .threat)
     #expect(event.severity == .critical)
-    #expect(event.note?.contains("OpenCane's camera described:") == true)
+    #expect(event.note?.contains("Waymark's camera described:") == true)
     #expect(event.extra?["threat_term"] == .string("gun"))
     #expect(event.lat == 40.1)
 }

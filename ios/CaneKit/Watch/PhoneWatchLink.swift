@@ -55,7 +55,7 @@ final class PhoneWatchLink {
     /// A watch is paired with this phone (from the last activation / state callback). False until
     /// activation completes.
     private(set) var isPaired = false
-    /// The OpenCane watch app (target CaneKitWatch) is installed on the paired watch.
+    /// The Waymark watch app (target CaneKitWatch) is installed on the paired watch.
     private(set) var isWatchAppInstalled = false
     /// True while the watch app can receive `sendMessage` right now.
     /// Mirrors `WCSession.isReachable` as of the last relay callback; AppModel uses it to warn

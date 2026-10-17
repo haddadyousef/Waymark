@@ -93,7 +93,7 @@ private func wire(_ event: OpenCaneEvent) throws -> [String: Any] {
     #expect(decoded == event)
 }
 
-/// The nested `location` form decodes (the contract allows it) even though OpenCane sends the
+/// The nested `location` form decodes (the contract allows it) even though Waymark sends the
 /// flat pair.
 @Test func nestedLocationFormDecodes() throws {
     let data = try #require(#"{"type":"location","location":{"lat":40.1,"lng":-88.2}}"#.data(using: .utf8))

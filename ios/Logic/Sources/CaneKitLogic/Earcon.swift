@@ -9,7 +9,7 @@
 //  stimulating again like with the amount of questions with the loading etc — make it nice, maybe a
 //  little tap or bell and then it releases something; don't over-stimulate the blind person too much
 //  or else they won't listen." The phone log of that walk (canekit-2026-09-13T08-51-14Z) shows why:
-//  in the first 30 s the walker heard "OpenCane ready.", the 76-character eight-word menu, "Still
+//  in the first 30 s the walker heard "Waymark ready.", the 76-character eight-word menu, "Still
 //  describing the previous scene." twice, "One moment." and "That is taking too long. Ask again in a
 //  moment." — words about waiting, not answers. A tone says "heard you / working / nothing" in
 //  under 0.2 s, does not compete with speech for the same attention, and leaves the street audible.
@@ -199,7 +199,7 @@ public enum EarconPolicy {
     public enum ListenKind: String, Sendable, Equatable {
         /// The walker pressed (Guide tile, Action button, nod).
         case press
-        /// The voice shell, once after "OpenCane ready." (Step 67: no launch menu).
+        /// The voice shell, once after "Waymark ready." (Step 67: no launch menu).
         case launch
         /// The voice shell, after an answer.
         case followUp

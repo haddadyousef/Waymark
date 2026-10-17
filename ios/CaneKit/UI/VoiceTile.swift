@@ -6,7 +6,7 @@
 //  inside ~40 thin, hand-drawn-looking contour rings. Tap anywhere on the rings to talk.
 //
 //  Why this exists: the first cane-mounted walk (2026-09-13) showed a blind walker cannot find a
-//  108 pt "Talk to OpenCane" tile among eleven buttons. Owner decision 2026-09-13: the launch
+//  108 pt "Talk to Waymark" tile among eleven buttons. Owner decision 2026-09-13: the launch
 //  screen is a giant microphone dead-centre (reference image: a circle of concentric wavy contour
 //  rings around a clear centre). The whole ring area — at least 60 % of the page height — is one
 //  button, so a thumb that lands anywhere near the middle of the phone talks. The rings say what
@@ -14,7 +14,7 @@
 //  while the app speaks, and are still when idle. Reduce Motion keeps them still.
 //
 //  Key invariants:
-//    · One accessibility element: the button, label exactly "Talk to OpenCane" / "Listening…" /
+//    · One accessibility element: the button, label exactly "Talk to Waymark" / "Listening…" /
 //      "Starting…" / "Thinking…" (the same state logic the old Talk tile had); the rings are hidden.
 //    · Action is `AppModel.toggleVoiceInput()` — press to talk, press again to send / cancel.
 //    · The rings are pure drawing from a seeded per-ring noise: the same shape every launch, no
@@ -87,7 +87,7 @@ struct VoiceTile: View {
         if model.voiceInput.isListening { return "Listening…" }
         if model.voiceInput.isStarting { return "Starting…" }
         if model.conversation.isProcessing { return "Thinking…" }
-        return "Talk to OpenCane"
+        return "Talk to Waymark"
     }
 
     /// Listening or starting: the disc turns danger red (today's convention for "tap to stop").

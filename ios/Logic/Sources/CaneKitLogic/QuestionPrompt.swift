@@ -2,7 +2,7 @@
 //  QuestionPrompt.swift
 //  CaneKitLogic
 //
-//  "Ask OpenCane" (Siri: "Ask OpenCane about the scene"): one spoken question about the frame the camera is looking at, one short spoken
+//  "Ask Waymark" (Siri: "Ask Waymark about the scene"): one spoken question about the frame the camera is looking at, one short spoken
 //  answer. The sibling of `ScenePrompt` ("Where am I", which asks nothing) and `HazardPrompt`
 //  (the automatic watch, which asks a fixed question every 8 s).
 //

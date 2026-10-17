@@ -2,10 +2,15 @@
 # Regenerate with `scripts/gen.sh` (never edit CaneKit.xcodeproj by hand; it is git-ignored).
 #
 # Targets
-#   CaneKit        iPhone app (iOS 26+)          bundle id com.aritro.canekit
-#   CaneKitWatch   watchOS companion (26+)       bundle id com.aritro.canekit.watchkitapp
-#   CaneKitWidget  Live Activity extension       bundle id com.aritro.canekit.widget   [added in steps 8–9]
-#   CaneKitUITests XCUITests + screenshot tour   bundle id com.aritro.canekit.uitests  (simulator only)
+#   CaneKit        iPhone app (iOS 26+)          bundle id $(BUNDLE_ID_PREFIX).waymark
+#   CaneKitWatch   watchOS companion (26+)       bundle id $(BUNDLE_ID_PREFIX).waymark.watchkitapp
+#   CaneKitWidget  Live Activity extension       bundle id $(BUNDLE_ID_PREFIX).waymark.widget
+#   CaneKitUITests XCUITests + screenshot tour   bundle id $(BUNDLE_ID_PREFIX).waymark.uitests  (simulator only)
+#
+# Waymark (DubHacks 2026): BUNDLE_ID_PREFIX and DEVELOPMENT_TEAM come from Config/Waymark.xcconfig,
+# which includes the git-ignored Config/Local.xcconfig that scripts/gen.sh writes from ios/local.mk
+# (BUNDLE_PREFIX / TEAM). Each teammate signs with their own free Personal Team, so each needs their
+# own prefix: Apple refuses a bundle id another team already registered (com.aritro.canekit is).
 # CaneKit and CaneKitWatch link the pure-logic SwiftPM package in ./Logic; the widget does not.
 # `Shared/LiveActivity` (NavActivityAttributes) is compiled into CaneKit and CaneKitWidget.
 #
@@ -22,14 +27,13 @@
 #   that dependency's two lines, and re-run `WATCH=0 scripts/gen.sh` after reformatting.
 #
 # The name split (deliberate — see AGENTS.md → "The name split"):
-#   What a HUMAN sees/hears  = OpenCane. That is `CFBundleDisplayName` on all three targets (home
+#   What a HUMAN sees/hears  = Waymark. That is `CFBundleDisplayName` on all three targets (home
 #     screen, Settings, the Files app folder, and the word Siri matches in an App Shortcut phrase,
 #     because `\(.applicationName)` resolves to the display name).
 #   What the CODE is called  = CaneKit. Project name, target names, `PRODUCT_NAME`, the SwiftPM
 #     module `CaneKitLogic`, the scheme, every `ios/CaneKit/…` path and the Makefile all stay
-#     CaneKit, and the bundle ids stay `com.aritro.canekit*` (frozen — hard rule 6: a new id makes
-#     iOS treat this as a different app and orphans the installed build, its settings and the
-#     ElevenLabs voice cache).
+#     CaneKit. The bundle ids are `$(BUNDLE_ID_PREFIX).waymark*` since the Waymark rename (a new id
+#     makes iOS treat this as a different app from an installed OpenCane build; that is intended).
 #   Do NOT "fix" the mismatch by renaming targets or `PRODUCT_NAME`: `PRODUCT_NAME` names the
 #   built `CaneKit.app`, which the Makefile, gen.sh and scripts/e2e.py all reference by path.
 #
@@ -52,8 +56,14 @@ name: CaneKit
 # Project-wide XcodeGen options. Deployment targets are 26.0 even though the demo phone runs
 # iOS 27: no iOS 27-only API is allowed (AGENTS.md hard rule 2). `xcodeVersion` only stamps the
 # generated project's compatibility; the build Mac uses Xcode 27.
+# Per-person signing: BUNDLE_ID_PREFIX + DEVELOPMENT_TEAM (see the header). Project-level, so every
+# target inherits them; nothing below sets either key, or it would override the xcconfig.
+configFiles:
+  Debug: Config/Waymark.xcconfig
+  Release: Config/Waymark.xcconfig
+
 options:
-  bundleIdPrefix: com.aritro
+  bundleIdPrefix: com.waymark
   deploymentTarget:
     iOS: "26.0"
     watchOS: "26.0"
@@ -103,9 +113,9 @@ targets:
         optional: true
         buildPhase: resources
       - path: Shared/LiveActivity
-      # Step 64: the OpenCane contour-ring mark (VoiceTile rings + the island's brand mark).
+      # Step 64: the Waymark contour-ring mark (VoiceTile rings + the island's brand mark).
       - path: Shared/Brand
-      # Step 64: the "Talk to OpenCane" control's intent (also compiled into the widget).
+      # Step 64: the "Talk to Waymark" control's intent (also compiled into the widget).
       - path: Shared/Intents
     # Embedding: the watch app lands in CaneKit.app/Watch/ (gen.sh patches XcodeGen #1613 for
     # Xcode 26+) and the widget in CaneKit.app/PlugIns/ (a widget anywhere else never loads).
@@ -117,7 +127,7 @@ targets:
         embed: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.aritro.canekit
+        PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).waymark
         # Names the build product CaneKit.app (Makefile, gen.sh, scripts/e2e.py use that path).
         PRODUCT_NAME: CaneKit
         # iPhone only.
@@ -133,15 +143,15 @@ targets:
     info:
       path: CaneKit/Info.plist
       properties:
-        # The name a person sees and the word Siri matches ("… in OpenCane") — see the header.
-        CFBundleDisplayName: OpenCane
+        # The name a person sees and the word Siri matches ("… in Waymark") — see the header.
+        CFBundleDisplayName: Waymark
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
-        # Step 64: opencane://guide (Live Activity tap) and opencane://talk (accessory widget,
+        # Step 64: waymark://guide (Live Activity tap) and waymark://talk (accessory widget,
         # handled by CaneKitApp.onOpenURL). Any other path just opens the app.
         CFBundleURLTypes:
-          - CFBundleURLName: com.aritro.canekit
-            CFBundleURLSchemes: [opencane]
+          - CFBundleURLName: $(BUNDLE_ID_PREFIX).waymark
+            CFBundleURLSchemes: [waymark]
         UILaunchScreen: {}
         # The phone is clamped to the cane in portrait; the UI and the lane math assume it.
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
@@ -152,7 +162,7 @@ targets:
         # receiving GPS fixes in the background.
         UIBackgroundModes: [audio, location]
         # Trip logs (JSONL) and the hazard map (GeoJSON + photos) in Documents show up in the
-        # Files app → On My iPhone → OpenCane (the display name, not the target name; review:
+        # Files app → On My iPhone → Waymark (the display name, not the target name; review:
         # they were unreachable on the phone).
         UIFileSharingEnabled: true
         LSSupportsOpeningDocumentsInPlace: true
@@ -160,30 +170,30 @@ targets:
         NSSupportsLiveActivities: true
         ITSAppUsesNonExemptEncryption: false
         # Purpose strings — the system shows these on first use. They are spoken/visible text, so
-        # they say OpenCane. Location is asked at launch (sighted helper present; skipped under
+        # they say Waymark. Location is asked at launch (sighted helper present; skipped under
         # CANEKIT_UITEST=1); Motion and HealthKit at route start.
-        NSCameraUsageDescription: "OpenCane uses the camera and LiDAR to detect obstacles between your waist and head."
-        NSLocationWhenInUseUsageDescription: "OpenCane uses your location and heading to guide you along the route."
+        NSCameraUsageDescription: "Waymark uses the camera and LiDAR to detect obstacles between your waist and head."
+        NSLocationWhenInUseUsageDescription: "Waymark uses your location and heading to guide you along the route."
         # Step 47: Always is requested at the first route start (LocationService.requestAlwaysAuthorization).
         # With Always, iOS draws no blue background-location pill in the Dynamic Island while a route
-        # runs with the screen locked, so OpenCane's own Live Activity owns the island the way Apple
+        # runs with the screen locked, so Waymark's own Live Activity owns the island the way Apple
         # Maps / Google Maps do; with When In Use only, the pill is mandatory and the activity is
         # pushed into the minimal bubble (owner's phone pictures, 2026-09-12 21:48).
-        NSLocationAlwaysAndWhenInUseUsageDescription: "OpenCane keeps guiding you with the screen locked. Always lets it do that without the blue location banner covering its own route card."
-        NSMotionUsageDescription: "OpenCane uses motion to tell when the cane is sweeping, to track your head direction with AirPods, and to count steps."
+        NSLocationAlwaysAndWhenInUseUsageDescription: "Waymark keeps guiding you with the screen locked. Always lets it do that without the blue location banner covering its own route card."
+        NSMotionUsageDescription: "Waymark uses motion to tell when the cane is sweeping, to track your head direction with AirPods, and to count steps."
         # Spoken commands: the push-to-talk / conversational assistant (VoiceInputEngine).
-        NSSpeechRecognitionUsageDescription: "OpenCane can take spoken commands."
+        NSSpeechRecognitionUsageDescription: "Waymark can take spoken commands."
         # Two microphone users, both opt-in, and each holds an explicit lease that moves the audio
         # session to .playAndRecord through SpeechQueue.setMicrophoneEnabled (AGENTS.md hard rule
         # 7): sound recognition (SoundWatcher — sirens, horns and vehicle sounds a blind pedestrian
         # cannot see coming; "Listen for sirens and horns" on the Hazards card, off by default) and
         # spoken commands (VoiceInputEngine).
-        NSMicrophoneUsageDescription: "OpenCane can listen for sirens, car horns and vehicle sounds to warn you about traffic you cannot see, and for spoken commands."
-        NSHealthShareUsageDescription: "OpenCane reads your step count for the arrival summary."
+        NSMicrophoneUsageDescription: "Waymark can listen for sirens, car horns and vehicle sounds to warn you about traffic you cannot see, and for spoken commands."
+        NSHealthShareUsageDescription: "Waymark reads your step count for the arrival summary."
         # The phone's own HealthKit request is read-only (TripTracker asks toShare: []); the
         # workout is recorded by the watch (WatchModel). Kept so the string is present if the
         # phone ever asks to share.
-        NSHealthUpdateUsageDescription: "OpenCane records the guided walk as a workout so the watch can keep giving cues."
+        NSHealthUpdateUsageDescription: "Waymark records the guided walk as a workout so the watch can keep giving cues."
 
   # ───────────────────────────── Watch app ─────────────────────────────
   CaneKitWatch:
@@ -198,7 +208,7 @@ targets:
       - package: CaneKitLogic
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.aritro.canekit.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).waymark.watchkitapp
         # Same product name as the phone app; the bundle id is what tells them apart.
         PRODUCT_NAME: CaneKit
         # Apple Watch.
@@ -211,17 +221,17 @@ targets:
     info:
       path: CaneKitWatch/Info.plist
       properties:
-        CFBundleDisplayName: OpenCane
+        CFBundleDisplayName: Waymark
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         WKApplication: true
         # Pairs with the phone app for WatchConnectivity; the watch app does nothing on its own.
-        WKCompanionAppBundleIdentifier: com.aritro.canekit
+        WKCompanionAppBundleIdentifier: $(BUNDLE_ID_PREFIX).waymark
         WKRunsIndependentlyOfCompanionApp: false
         WKBackgroundModes: [workout-processing, mindfulness]   # workout keep-alive + runtime-session fallback
-        NSMotionUsageDescription: "OpenCane counts steps for the arrival summary."
-        NSHealthShareUsageDescription: "OpenCane reads your step count for the arrival summary."
-        NSHealthUpdateUsageDescription: "OpenCane records the guided walk as a workout so wrist cues keep working."
+        NSMotionUsageDescription: "Waymark counts steps for the arrival summary."
+        NSHealthShareUsageDescription: "Waymark reads your step count for the arrival summary."
+        NSHealthUpdateUsageDescription: "Waymark records the guided walk as a workout so wrist cues keep working."
 
   # ───────────────────────────── Live Activity widget ─────────────────────────────
   CaneKitWidget:
@@ -236,7 +246,7 @@ targets:
       - path: Shared/Intents
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.aritro.canekit.widget
+        PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).waymark.widget
         # Step 64: Shared/Intents/TalkControlIntent.swift compiles a no-op `perform` here (the app's
         # copy runs, `openAppWhenRun`).
         SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) CANEKIT_WIDGET"
@@ -247,7 +257,7 @@ targets:
     info:
       path: CaneKitWidget/Info.plist
       properties:
-        CFBundleDisplayName: OpenCane
+        CFBundleDisplayName: Waymark
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSExtension:
@@ -265,7 +275,7 @@ targets:
       - target: CaneKit
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.aritro.canekit.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).waymark.uitests
         # The app the XCUIApplication() in the tests launches.
         TEST_TARGET_NAME: CaneKit
         # XCTestCase's setUp / test methods are nonisolated; under the MainActor default the

@@ -7,7 +7,7 @@
 //
 //  Why this exists: owner decision 2026-09-13 — at launch the app speaks by itself and then listens
 //  by itself; after an answer it may listen again for a follow-up. Step 67 (owner, on
-//  `canekit-2026-09-13T15-48-34Z.jsonl`: "It should just be 'OpenCane ready' and then boom"): what
+//  `canekit-2026-09-13T15-48-34Z.jsonl`: "It should just be 'Waymark ready' and then boom"): what
 //  launch speaks is `launchLine` alone — no menu — then the listening tone. Every one of
 //  those unasked-for microphone opens flips the audio session to `.playAndRecord` (hard rule 7),
 //  lights the orange dot, and can raise a permission prompt nobody can see. The rules for when
@@ -44,18 +44,18 @@ public enum VoiceShellPolicy {
     public static let followUpSecondsNavigating: Double = 3
 
     /// Longest a launch or follow-up listen waits for the speech queue to drain before it gives up,
-    /// seconds. [H] 15 s: "OpenCane ready." (or an answer) + a warning or two. Named `menuWaitCap`
+    /// seconds. [H] 15 s: "Waymark ready." (or an answer) + a warning or two. Named `menuWaitCap`
     /// until Step 67 removed the launch menu.
     public static let speechDrainCap: Double = 15
 
     /// The whole launch announcement on a phone with LiDAR (Step 67: nothing follows it but the
     /// listening tone). ⚠ Byte-identical to the entry in `AppModel.commonLines`, which references
     /// this constant so the natural-voice cache hits. Pinned by `launchSaysOnlyOpenCaneReady`.
-    public static let readyLine = "OpenCane ready."
+    public static let readyLine = "Waymark ready."
 
     /// The launch announcement on a phone without LiDAR: obstacle warnings cannot work, and the
     /// walker must know at once. Pinned by `launchSaysOnlyOpenCaneReady`.
-    public static let noLidarLine = "OpenCane. This phone has no LiDAR."
+    public static let noLidarLine = "Waymark. This phone has no LiDAR."
 
     /// What launch says before the listening tone — one line, never a menu.
     /// - Parameter lidarSupported: `ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth)`.
@@ -82,7 +82,7 @@ public enum VoiceShellPolicy {
     ///   - muted: `SpeechQueue.muted` (automation).
     ///   - speechAuthorized: whether speech recognition may be used. ⚠ `AppModel.listenAfterLaunchLine`
     ///     passes "not denied / restricted" (owner decision 2026-09-13): on a first launch the
-    ///     permission prompts appear right after "OpenCane ready.", because the voice shell is the app.
+    ///     permission prompts appear right after "Waymark ready.", because the voice shell is the app.
     ///   - micGranted: likewise "not denied" from the app.
     ///   - micOwnedElsewhere: `SoundWatcher` owns the microphone session.
     ///   - recoveredLaunch: `LaunchRecovery` disabled optional features this launch.

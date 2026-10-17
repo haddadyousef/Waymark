@@ -5,7 +5,7 @@
 //  Manages conversational assistant state, history, marker persistence, and tool dispatching.
 //  Bridges CaneKitLogic decision models with AppModel effects.
 //
-//  Why it exists (Step 23, "Talk to OpenCane"): a blind walker with one hand on the cane needs to
+//  Why it exists (Step 23, "Talk to Waymark"): a blind walker with one hand on the cane needs to
 //  ask for things by voice — status, a destination, a post, a setting — without a screen. Every
 //  query takes exactly one of four paths, in this order:
 //    1. Fast path (`FastPathIntentClassifier.classify`): deterministic, offline, 0 tokens —

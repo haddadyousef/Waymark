@@ -27,7 +27,7 @@
 //
 //  Owner: `SceneDescriber` (app, main actor) calls `check` between the cloud reply and speech —
 //  `grounded(_:jpeg:lidar:)` for "Where am I" and `groundedAnswer(_:jpeg:lidar:)` for "Ask
-//  OpenCane" — after re-running `OnDeviceVision.detect` on the SAME frame the cloud saw, passing
+//  Waymark" — after re-running `OnDeviceVision.detect` on the SAME frame the cloud saw, passing
 //  the LiDAR line (`AppModel.contextLine`), the text Vision read (confidence ≥ 0.5, filtered by
 //  `SceneVocabulary.readableTexts`) and `SceneVocabulary.narrationNouns` of Vision's labels.
 //  nil → "Where am I" speaks the on-device description instead; a question says "I can't answer

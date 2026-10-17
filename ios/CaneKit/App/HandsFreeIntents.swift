@@ -23,13 +23,13 @@
 //       and the only one whose right value changes mid-walk (a crowded corridor, a false-positive
 //       stretch, a hand that needs the cane quiet). Everything else on the cards is set up before
 //       leaving.
-//    4. **Talk to OpenCane** — the Action button target: one press opens the app and starts
+//    4. **Talk to Waymark** — the Action button target: one press opens the app and starts
 //       listening, so a walker with both hands on the cane can ask anything (status, scene,
 //       places, posts) with no wake word and no screen.
 //  What did NOT get a slot, and why: Recenter (the watch has it, and the app re-zeroes itself
 //  after three straight-walking fixes), the hazard switches (configuration, set before the
 //  walk, not during it), and "Navigate to CIF from here" (the Guide card button is unchanged
-//  and "Take me to CIF in OpenCane" reaches the same route-file waypoint by Siri). All are
+//  and "Take me to CIF in Waymark" reaches the same route-file waypoint by Siri). All are
 //  still reachable hands-free — as plain `AppIntent`s, which the Shortcuts app lists as actions
 //  and which can be put on the Action button by building a one-step shortcut around them. Only
 //  the automatic, phrase-driven kind is capped at ten.
@@ -236,7 +236,7 @@ extension AppModel {
 // MARK: - Parameter types
 
 /// On or off, said out loud. Used by the haptics intent and the feature intent so a phrase can
-/// carry the state ("Turn cane haptics off in OpenCane") — an App Shortcut phrase can interpolate
+/// carry the state ("Turn cane haptics off in Waymark") — an App Shortcut phrase can interpolate
 /// an `AppEnum`, never a `Bool` or a `String`.
 enum SwitchState: String, AppEnum {
     // `on` = the feature (or, for `SilenceHapticsIntent`, the cane buzz) runs; `off` = it does not.
@@ -278,7 +278,7 @@ enum HandsFreeOption: String, AppEnum {
     case dropOffs, signs, hazardWatch, namePeople, obstacleNames, beacon, sirens, nodToTalk
 
     /// Parameter type name in Shortcuts.
-    static let typeDisplayRepresentation: TypeDisplayRepresentation = "OpenCane feature"
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Waymark feature"
     /// Titles match the switch labels on the Hazards card so the spoken name and the screen name
     /// are the same thing; synonyms are what a walker would say instead.
     static let caseDisplayRepresentations: [HandsFreeOption: DisplayRepresentation] = [
@@ -330,7 +330,7 @@ enum HandsFreeOption: String, AppEnum {
 
 // MARK: - App Shortcuts (four of the ten; registered in AppIntents.swift)
 
-/// Siri / Action button "How is OpenCane doing": speaks obstacle detection, GPS, audio, haptics,
+/// Siri / Action button "How is Waymark doing": speaks obstacle detection, GPS, audio, haptics,
 /// route and battery. The spoken version of every card on the screen, for a walker who cannot see
 /// one of them.
 struct StatusIntent: AppIntent {
@@ -353,12 +353,12 @@ struct StatusIntent: AppIntent {
     }
 }
 
-/// Siri / Action button "Ask OpenCane about the scene": one question about what the cane-mounted
+/// Siri / Action button "Ask Waymark about the scene": one question about what the cane-mounted
 /// camera is looking at, one sentence back.
 ///
 /// The question is a `String` parameter and not part of the phrase, because an App Shortcut phrase
-/// can only interpolate an `AppEnum` / `AppEntity` — the same reason "Take me somewhere in OpenCane"
-/// exists beside "Take me to Grainger in OpenCane". Siri therefore asks "What do you want to know?"
+/// can only interpolate an `AppEnum` / `AppEntity` — the same reason "Take me somewhere in Waymark"
+/// exists beside "Take me to Grainger in Waymark". Siri therefore asks "What do you want to know?"
 /// and runs the intent again with the answer.
 struct AskSceneIntent: AppIntent {
     /// Shown in Shortcuts and the Action button picker.
@@ -478,11 +478,11 @@ struct SetOptionIntent: AppIntent {
     }
 }
 
-/// Action button / Shortcuts "Talk to OpenCane": spoken conversational assistant query.
+/// Action button / Shortcuts "Talk to Waymark": spoken conversational assistant query.
 ///
 /// Registered as an App Shortcut (`CaneKitShortcuts` in `AppIntents.swift`), so it appears
 /// directly in iOS Settings > Action Button > Shortcut with no user-built shortcut, and answers
-/// to "Talk to OpenCane" via Siri. An empty query (an Action button press) toggles push-to-talk
+/// to "Talk to Waymark" via Siri. An empty query (an Action button press) toggles push-to-talk
 /// listening in the app; a filled one is answered conversationally at `.scene` priority.
 ///
 /// Why it is an App Shortcut at all (Step 29): as a plain `AppIntent` it never appeared in the
@@ -490,17 +490,17 @@ struct SetOptionIntent: AppIntent {
 /// `NavigateToCIFIntent` gave up its slot for it.
 struct TalkToOpenCaneIntent: AppIntent {
     /// Shown in Shortcuts and the Action button picker.
-    static let title: LocalizedStringResource = "Talk to OpenCane"
+    static let title: LocalizedStringResource = "Talk to Waymark"
     /// Subtitle in Shortcuts.
-    static let description = IntentDescription("Speak to OpenCane to navigate, set posts, check status, or ask questions.")
+    static let description = IntentDescription("Speak to Waymark to navigate, set posts, check status, or ask questions.")
     /// ⚠ Foreground only: ensures the app is frontmost with obstacle warnings live.
     static let supportedModes: IntentModes = .foreground(.immediate)
-    /// Direct Action button presses bring OpenCane to the screen immediately.
+    /// Direct Action button presses bring Waymark to the screen immediately.
     static let openAppWhenRun: Bool = true
 
     /// What the walker wants to ask or command. Optional on purpose: nil / blank means "start (or
     /// submit) push-to-talk", which is what a bare Action button press sends.
-    @Parameter(title: "Query", requestValueDialog: "How can OpenCane help?")
+    @Parameter(title: "Query", requestValueDialog: "How can Waymark help?")
     var query: String?
 
     /// Waits for the model, then either toggles push-to-talk (`AppModel.toggleVoiceInput(source:

@@ -94,7 +94,7 @@ struct CKTabBar: View {
     @Environment(\.colorSchemeContrast) private var contrast
 
     /// One row of equal-width tab buttons on the card surface with a top hairline; one VoiceOver
-    /// container "OpenCane tabs"; a `.selection` haptic on every change of `selection` (the only
+    /// container "Waymark tabs"; a `.selection` haptic on every change of `selection` (the only
     /// app-owned haptic besides the big-button press).
     ///
     /// UI audit 2026-09-13: the surface now runs down under the home indicator
@@ -118,7 +118,7 @@ struct CKTabBar: View {
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("OpenCane tabs")
+        .accessibilityLabel("Waymark tabs")
         .sensoryFeedback(.selection, trigger: selection)
     }
 

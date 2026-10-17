@@ -7,7 +7,7 @@
 //
 //  Why these are the tests: phone log `canekit-2026-09-13T15-48-34Z.jsonl`. The hand gripping the
 //  phone pressed Camera Control three times in the first four seconds (t = 1.71, 2.89, 3.56:
-//  `describe {trigger: cameraControl}`), two of them while "OpenCane ready." and the menu were
+//  `describe {trigger: cameraControl}`), two of them while "Waymark ready." and the menu were
 //  still speaking. The walker heard two busy earcons and, at 14.9 s, a scene description nobody
 //  asked for. Each Step 67 test replays one part of that: the launch grace, the launch line, the
 //  listening window.

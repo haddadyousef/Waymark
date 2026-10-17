@@ -60,7 +60,7 @@ nonisolated struct AlertSummarizer: Sendable {
     /// seconds later with context is fine, thirty seconds later is not.
     private static let requestTimeout: TimeInterval = 6
 
-    private static let log = Logger(subsystem: "com.aritro.canekit", category: "alertsummary")
+    private static let log = Logger(subsystem: "waymark", category: "alertsummary")
 
     /// Its own session: the alert path must not queue behind a "Where am I" image upload on the
     /// shared one, and it wants a much shorter timeout than scene description does.

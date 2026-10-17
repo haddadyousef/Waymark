@@ -123,7 +123,7 @@ public enum AlertContextPrompt {
         if let h = context.lastGroundHazard { lines.append("last ground hazard: \(h)") }
 
         return """
-        You are writing one short status line about a blind person walking with the OpenCane \
+        You are writing one short status line about a blind person walking with the Waymark \
         smart cane, to be read by their family.
 
         Write at most \(maxSentences) plain sentences, under \(maxReplyCharacters) characters. \
