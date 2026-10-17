@@ -61,10 +61,21 @@ case "$STAGE" in
     ;;
   uitest)
     git checkout -q main && git pull -q --ff-only origin main || exit 1
-    if ! xcrun simctl list devices | grep -q "iPhone 17 Pro Max"; then run g0-sim17 make sim17; fi
-    run g0-uitest-uiuc make uitest SIM_LAT=40.1140 SIM_LON=-88.2249
+    # Simulator: SIM from the environment, else iPhone 17 Pro Max (the base repo's target), else
+    # the first available iPhone Pro simulator. Xcode 27.1 refused to create a 17 Pro Max on the
+    # iOS 27.1 runtime ("Incompatible device", 14:28), so the fallback matters.
+    SIMNAME="${SIM:-}"
+    if [ -z "$SIMNAME" ]; then
+      if xcrun simctl list devices available | grep -q "iPhone 17 Pro Max ("; then SIMNAME="iPhone 17 Pro Max"
+      elif run g0-sim17 make sim17; then SIMNAME="iPhone 17 Pro Max"
+      else SIMNAME="$(xcrun simctl list devices available | sed -n -E 's/^ +(iPhone [0-9]+ Pro( Max)?) \(.*/\1/p' | head -n 1)"
+      fi
+    fi
+    [ -n "$SIMNAME" ] || { echo "no iPhone Pro simulator available"; finish; exit 1; }
+    echo "== simulator: $SIMNAME"
+    run g0-uitest-uiuc make uitest SIM="$SIMNAME" SIM_LAT=40.1140 SIM_LON=-88.2249
     xcrun simctl shutdown all >/dev/null 2>&1 || true
-    run g0-uitest-seattle make uitest
+    run g0-uitest-seattle make uitest SIM="$SIMNAME"
     ;;
   device)
     git checkout -q main && git pull -q --ff-only origin main || exit 1
