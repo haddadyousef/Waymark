@@ -18,6 +18,7 @@ Owner: Windows session (single writer). Mac proposes changes in `STATUS_M.md`. N
 - 2026-10-17 14:10 | F-09 | Open and unverified: byte-exact raw samples on disk, non-empty `tag_counts`, rate limits, `streets` and `regions` on Seattle, device-shell reachability, iPhone model and LiDAR, Apple ID and team, watch, AirPods, mount, DubHacks rules and schedule, aritroBh's permission. | leader
 - (details of the above) byte-exact raw samples on disk, non-empty `tag_counts`, rate limits, `streets` and `regions` endpoints on Seattle, whether a device shell can reach the host, iPhone model and LiDAR, Apple ID and team, watch, AirPods, mount, DubHacks rules and schedule, aritroBh's permission.
 - 2026-10-17 14:12 | F-13 | `add_repo` attached `haddadyousef/waymark` to the Windows session but `push_check` was `refused` (GitHub linked, Claude GitHub App not yet installed on the repo). Akash's GitHub username is `azphalt`. | Windows session, Yousef
+- 2026-10-17 14:30 | F-14 | The Mac session's GitHub identity is `akeeshcodes` and it already has push access to the repo (its first commit af0bfb5 landed on main at 14:19). Yousef named Akash as `azphalt`; which is Akash's is unconfirmed. Mac branch `waymark/g0-rename` holds the rename commit (dbf548e) and M1 (e05ce58), not yet verified on the Mac. | Windows check-in
 
 ## Decisions
 
@@ -40,6 +41,10 @@ Owner: Windows session (single writer). Mac proposes changes in `STATUS_M.md`. N
 - 2026-10-17 14:10 | D-17 | Standing authority for the Windows session: act freely inside the granted folder and project; ask before making a repo public, messaging anyone as Yousef, contacting aritroBh or DubHacks, spending money, or touching other accounts or folders. | Yousef's instruction, leader's limits
 
 - 2026-10-17 14:03 | D-18 | Yousef confirmed building on OpenCane is allowed, and at 14:10 that the OpenCane authors said credit is not required. Recorded as his statement; the verbatim message is to be pasted. Disclosure to judges stays (D-10). | Yousef
+- 2026-10-17 14:30 | D-19 | `severity` is a number in [1,3] stored as the API gives it (at most 2 decimals, no rounding), or null. Answers the Mac's median question; amends WAYMARK_PLAN 5.2. | leader
+- 2026-10-17 14:30 | D-20 | `n_eff` is display-only in v1. `WaymarkAlertPolicy` does not require a minimum `n_eff`. | leader
+- 2026-10-17 14:30 | D-21 | Ack the D-08 proposal: delete `AritroProfile.imageset`, use the fallback symbol. Check no UI test references the photo. | leader
+- 2026-10-17 14:30 | D-22 | `make uitest` runs twice: at the UIUC location (`SIM_LAT=40.1140 SIM_LON=-88.2249`) as the like-for-like gate, and at Seattle for information only. | leader
 
 ## Pending human inputs (fill in when answered)
 

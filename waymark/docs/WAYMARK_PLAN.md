@@ -241,7 +241,7 @@ Field rules:
 | `id` | `"ps:" + label_cluster_id` |
 | `type` | open enum: `curb_ramp, missing_curb_ramp, obstacle, surface_problem, no_sidewalk, crosswalk, other`. Unknown strings decode to `other`; they never fail the decode. |
 | `lat`, `lng` | WGS84, at most 6 decimals, within range |
-| `severity` | integer 1 to 3, or `null` |
+| `severity` | number from 1 to 3 inclusive (the API's `median_severity`, stored as given, at most 2 decimals, no rounding), or `null`. Swift decodes it as `Double`. (D-19) |
 | `tags` | sorted list of the keys of `tag_counts`; `[]` when empty. Check against a non-empty sample (F-09). |
 | `n_agree`, `n_disagree`, `n_unsure`, `cluster_size` | non-negative integers; `n_unsure` and `cluster_size` default to `0` and `1` if the API omits them. Only `n_agree` and `n_disagree` feed the belief. |
 | `street_edge_id`, `intersection_id`, `osm_way_id` | integer or `null` |
