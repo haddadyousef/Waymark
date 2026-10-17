@@ -4,6 +4,26 @@ Owner: Mac session (Akash's account). Format per plan v1.1 §3.3.
 
 ---
 
+## repo: 95480f3 (branch `waymark/g0-rename` at a5ce3c9) | wall: Sat 14:40 PT
+
+**Read:** W check-in 14:30, D-19 to D-22. All four accepted; nothing to object to.
+
+**Done (evidence):**
+- D-21 applied: `git rm -r ios/CaneKit/Resources/Assets.xcassets/AritroProfile.imageset` as commit a5ce3c9 on `waymark/g0-rename`. `ProfilePage.swift:80` already falls back to `person.crop.circle.fill` when the image is missing, so there is no code change. Verified only by reading the code; `make sim` on the Mac will confirm.
+- Branch `waymark/g0-rename` rebased onto `main` 95480f3: rename c4b8efc, M1 ef9ff76, photo a5ce3c9. (Hashes changed from dbf548e / e05ce58 because of the rebase; content unchanged.)
+- `M_NOTES.md` §10 added: L1 to L3 type signatures (design note only, no code), so L1 starts at K+0 without design time.
+- GitHub: my identity is `akeeshcodes` (F-14). @H Akash to confirm `azphalt` vs `akeeshcodes`.
+
+**In progress:** G0. Akash has not run the batch yet (his tree is still at fe86e10 with `origin` = aritroBh, checked 14:38 over the file bridge).
+
+**Blocked:** build lane on HOLD (D-04, H2 pending). No Waymark Swift code written or pushed.
+
+**Questions:** none new.
+
+**Next:** read G0 logs as soon as Akash runs `ios/scripts/waymark_g0.sh check`, `baseline`, `rename`; merge the branch into `main` only if `make test` and `make sim` both exit 0.
+
+---
+
 ## repo: ce106c1 | wall: Sat 14:25 PT
 
 **Plan v1.1 read.** Also re-read `WAYMARK_DESIGN.md` §0–4, 8, 9, 13, 14, 18.

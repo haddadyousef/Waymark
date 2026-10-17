@@ -190,3 +190,101 @@ Clock rule: Logic gets explicit `now` values. Wall clock for GPS/beliefs (`GeoFi
 - With the rename commit applied: **912 passed, exit 0** (same caveat).
 - Two caveats: the tests that read `ios/CaneKit/Resources/*.json` need the full `ios/` tree, not a copy of `Logic/` alone; and the Mac (Xcode 27.1's Swift) is the final gate via `make test`.
 - The workaround is not committed.
+
+## 10. L1 to L3 type design (design note, written in the prep lane; no code until the hold lifts)
+
+All in `ios/Logic/Sources/CaneKitLogic/Waymark/`, `import Foundation` only, depending on the base
+repo only through `Coordinate`, `GeoFix`, `GeoMath` (plan 1.4). Everything `public`, `Sendable`,
+value types, no stored clocks.
+
+### L1
+```swift
+public enum WaymarkLabelType: String, Sendable, Codable, CaseIterable {
+    case curbRamp = "curb_ramp", missingCurbRamp = "missing_curb_ramp", obstacle,
+         surfaceProblem = "surface_problem", noSidewalk = "no_sidewalk", crosswalk, other
+    // init(from:) maps any unknown string to .other (never throws on an unknown value)
+}
+public struct WaymarkPrior: Sendable, Equatable, Codable, Identifiable {
+    public let id: String            // "ps:<source_cluster_id>"
+    public let type: WaymarkLabelType
+    public let lat: Double, lng: Double
+    public let severity: Double?     // D-19: a number in [1, 3], no rounding
+    public let tags: [String]
+    public let nAgree: Int, nDisagree: Int, nUnsure: Int, clusterSize: Int
+    public let streetEdgeID: Int?, intersectionID: Int?, osmWayID: Int?
+    public let imageryDate: String?, labelDate: String?   // "YYYY-MM"
+    public let sourceClusterID: Int
+    public var coordinate: Coordinate { get }
+}
+public struct WaymarkPriorSet: Sendable, Equatable {
+    public static let schemaID = "waymark.priors.v1"
+    public static let maxLabels = 20_000
+    public static let maxBytes = 3 * 1024 * 1024
+    public let generatedAt: String, sourceName: String, bboxLngLat: [Double], labels: [WaymarkPrior]
+    public static func decode(_ data: Data) throws(WaymarkPriorError) -> WaymarkPriorSet
+}
+public enum WaymarkPriorError: Error, Equatable {
+    case tooLarge(bytes: Int), wrongSchema(String), malformed(String),
+         tooManyLabels(Int), badCoordinate(id: String), badSeverity(id: String),
+         badBBox, idMismatch(id: String), duplicateID(String)
+}
+public struct WaymarkIndex: Sendable {
+    public static let cellDegrees = 0.0005          // [H] about 55 m north-south
+    public init(_ labels: [WaymarkPrior])
+    public func within(_ radiusM: Double, of c: Coordinate) -> [WaymarkPrior]   // sorted by distance, then id
+}
+```
+Tests: golden decode (inline 5.2 copy until `contracts/golden/` lands), unknown type → `.other`,
+each rejection, extra fields ignored, index equals brute force on seeded random sets (including
+labels exactly on cell edges and the antimeridian-free Seattle box), empty set.
+
+### L2
+```swift
+public struct WaymarkCourse: Sendable { public let headingDeg: Double }   // from CourseSmoother or route legs
+public enum WaymarkAhead {
+    public static let lookaheadMaxM = 35.0, corridorHalfWidthM = 12.0     // [H]
+    /// along-track 0...lookahead, |cross-track| <= corridor, closest first; [] when speed < 0.5 m/s
+    public static func select(from candidates: [WaymarkPrior], at fix: GeoFix,
+                              legs: [Coordinate]?, headingDeg: Double?) -> [(prior: WaymarkPrior, alongM: Double, crossM: Double)]
+}
+public enum WaymarkSensor: String, Sendable, Codable { case spotter, lidarTorso = "lidar_torso", lidarHead = "lidar_head", ground, vision }
+public enum WaymarkOutcome: String, Sendable, Codable { case confirmed, contradicted, unverifiable }
+public struct WaymarkBelief: Sendable, Equatable, Codable {
+    public var eA: Double, eB: Double, tLast: Double?      // UTC seconds
+    public static func halfLifeDays(_ t: WaymarkLabelType) -> Double     // 60 / 120 / 365
+    public static func weight(_ s: WaymarkSensor) -> Double              // 2 / 1 / 1 / 0.5 / 0.5
+    public func read(prior: WaymarkPrior, now: Double) -> (a: Double, b: Double, p: Double, nEff: Double)
+    public mutating func update(_ o: WaymarkOutcome, sensor: WaymarkSensor, type: WaymarkLabelType, now: Double)
+}
+public enum WaymarkThreshold {
+    public static func tau(costMiss: Double, costFalseAlarm: Double) -> Double   // C_fa / (C_fa + C_miss)
+    public static func tau(for t: WaymarkLabelType) -> Double?                   // nil = never alerts on p alone
+}
+```
+`n_eff` is display-only (D-20). Tests: every row of plan 5.3, `belief_vectors.json` once it lands,
+unverifiable leaves `tLast`, monotonic tau, the four exact values to 1e-12.
+
+### L3
+```swift
+public enum WaymarkLine: String, Sendable, CaseIterable { case obstacle, missingCurbRamp, noSidewalk, surfaceProblem, curbRamp
+    public var text: String }                         // Appendix A, the only place the words live
+public enum WaymarkLines { public static let all: [String] }   // appended to SpokenPhrases.warningLines
+public struct WaymarkAlertInputs: Sendable {           // everything the policy may look at, plain values
+    public let cueLevel: String, cuePlace: String       // raw values of CueLevel / CuePlace (portability: no base types)
+    public let crossingSettle: Bool, voiceHeld: Bool, gpsWeak: Bool, fixFresh: Bool
+    public let secondsSinceLidarCue: Double?, nowUTC: Double
+}
+public struct WaymarkAlertPolicy: Sendable {
+    public static let minSpacingS = 20.0, maxPerRoute = 6          // [H]
+    public mutating func decide(_ candidate: (prior: WaymarkPrior, alongM: Double), p: Double,
+                                inputs: WaymarkAlertInputs) -> WaymarkDecision
+    public mutating func routeStarted(), routeEnded()
+}
+public enum WaymarkDecision: Equatable, Sendable { case speak(WaymarkLine, labelID: String), silent(reason: String) }
+public enum WaymarkRecord {                             // trip-log payloads; never a `t` or `kind` key
+    public static func cue(...) -> [String: String], evidence(...) -> String   // evidence = one waymark.evidence.v1 JSON line
+}
+```
+Portability note: `CueLevel` / `CuePlace` live in the base repo's Logic, so the policy takes their raw
+strings ("quiet", "standard", "detailed"; "outdoors", "indoors") instead of the types, which keeps the
+`Waymark/` folder free of base-repo types other than `Coordinate`, `GeoFix`, `GeoMath` (plan 1.4).
