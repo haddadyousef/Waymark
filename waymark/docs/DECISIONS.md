@@ -19,6 +19,8 @@ Owner: Windows session (single writer). Mac proposes changes in `STATUS_M.md`. N
 - (details of the above) byte-exact raw samples on disk, non-empty `tag_counts`, rate limits, `streets` and `regions` endpoints on Seattle, whether a device shell can reach the host, iPhone model and LiDAR, Apple ID and team, watch, AirPods, mount, DubHacks rules and schedule, aritroBh's permission.
 - 2026-10-17 14:12 | F-13 | `add_repo` attached `haddadyousef/waymark` to the Windows session but `push_check` was `refused` (GitHub linked, Claude GitHub App not yet installed on the repo). Akash's GitHub username is `azphalt`. | Windows session, Yousef
 - 2026-10-17 14:30 | F-14 | The Mac session's GitHub identity is `akeeshcodes` and it already has push access to the repo (its first commit af0bfb5 landed on main at 14:19). Yousef named Akash as `azphalt`; which is Akash's is unconfirmed. Mac branch `waymark/g0-rename` holds the rename commit (dbf548e) and M1 (e05ce58), not yet verified on the Mac. | Windows check-in
+- 2026-10-17 14:25 | F-15 | Akash: both GitHub accounts are his; he uses `azphalt` (F-14 resolved). OpenCane is a project Akash developed with a team, and Waymark is his new project on top of it, so the base is the team's own prior work. The base still predates DubHacks, so it is disclosed as pre-existing work (H2). | Mac status, Akash
+- 2026-10-17 14:30 | F-16 | Mac, G0 simulator half: Xcode 27.1, XcodeGen 2.46.0, macOS 26.6.2; baseline `make test` 919/919 exit 0; rename branch `make test` 919/919 exit 0 and `make sim` BUILD SUCCEEDED exit 0 (phone-only generation). Not done: uitest at both locations, device run. Mac disk has 11 GiB free. | Mac status
 
 ## Decisions
 
@@ -46,10 +48,20 @@ Owner: Windows session (single writer). Mac proposes changes in `STATUS_M.md`. N
 - 2026-10-17 14:30 | D-21 | Ack the D-08 proposal: delete `AritroProfile.imageset`, use the fallback symbol. Check no UI test references the photo. | leader
 - 2026-10-17 14:30 | D-22 | `make uitest` runs twice: at the UIUC location (`SIM_LAT=40.1140 SIM_LON=-88.2249`) as the like-for-like gate, and at Seattle for information only. | leader
 - 2026-10-17 14:35 | D-23 | Windows-session commits are authored as Yousef with the GitHub noreply address, no Claude co-author trailer, so they show as `haddadyousef`. Commits before this one (ce106c1, 95480f3) keep their old author fields. | Yousef
+- 2026-10-17 14:42 | D-24 | Team repo moved to `github.com/haddadyousef/jiijeicfe` (Yousef, 14:37 initial commit; tree equals old `Waymark` main at 622ba38 except an older STATUS_M.md). Old `haddadyousef/Waymark` is frozen and kept as the full-history record. See PROVENANCE.md. | Yousef
+- 2026-10-17 14:42 | D-25 | Mac-session commits follow D-23: authored as Akash (`azphalt`) noreply, no Claude co-author trailer, unless Akash says otherwise. | leader, pending Akash
+- 2026-10-17 14:49 | D-26 | Evidence lines are compared as parsed JSON (float tolerance 1e-9) in Swift tests, not byte for byte. Relaxes v1.0 8.1 (`WaymarkRecord` row). | leader
+- 2026-10-17 14:49 | D-27 | Bundle labels sorted ascending by numeric `source_cluster_id`. Clarifies WAYMARK_PLAN 5.2 determinism row. | leader
+- 2026-10-17 14:53 | D-28 | **Build lane hold RELEASED** by Yousef (14:52, message: "hold released"). H2 answers (rules text, schedule) are still not on file; Yousef is responsible for the rules. Plan 1.3 right-hand column starts now. | Yousef
+- 2026-10-17 15:30 | D-29 | **Rulings on the Mac's L3 questions (STATUS_M 15:05).** (1) `curb_ramp` has no tau; at Detailed it speaks only if `p >= 0.5` (a ramp the evidence has mostly contradicted is not announced). Needs a test. (2) Any LiDAR cue in the last 5 s silences Waymark: accepted, it only makes it quieter. (3) Position uncertainty is added to the trigger distance (speak earlier), capped at the 35 m look-ahead: accepted. The v1.0 8.3 wording "reduced by" is an error (it would put the line at the label), overridden. (4) Standard follows plan 5.2 (obstacle, missing curb ramp, no sidewalk); plan beats the v1.0 design doc. | leader
+- 2026-10-17 15:30 | D-30 | Build-lane release is recorded as D-28 (this resolves the Mac's request to record it as D-04). D-04 stays as written. | leader
+- 2026-10-17 15:30 | D-31 | **Finding, real data.** With the real bundle, no label of a speakable type has `p < tau` from priors alone (minimum p is 0.5, because clusters with more disagrees than agrees are dropped). So thresholds never silence a prior until field evidence arrives. Consequence for the demo: a stale label stops being announced only if it has few validations. Obstacle (tau 1/6) needs about ten spotter contradictions; a `surface_problem` with `n_agree = 0` drops below 1/3 after one spotter tap (1 / 4 = 0.25). P5 must choose a demo candidate like that, and the pitch must not claim the app "learns" after one walk for obstacles. | leader
+- 2026-10-17 15:30 | D-32 | **Finding, staleness.** 1,543 of 1,752 labels of speakable types (88%) have imagery from 2019 or earlier (2007 at the oldest). Prior age is not modelled in `p`, only our own evidence decays. Not changed for v1; V2 reports confirm rate against imagery age (metric 5) so the data can say whether it matters. | leader
+- 2026-10-17 15:30 | D-33 | The Mac may keep pushing to the old `Waymark` repo until it has write access to `jiijeicfe` (Yousef was asked at 15:20 to add `azphalt` as a collaborator). After that, move per plan 3.7. Work done in the meantime is kept by cherry-pick, not rewritten. | leader
 
 ## Pending human inputs (fill in when answered)
 
 - H1 paste the OpenCane authors' reply for the record: pending
-- H2 DubHacks rules answers and schedule: pending. Hold status: HOLD
-- H3 Akash (GitHub `azphalt`) invited as collaborator: pending. GitHub linked to Claude: done 14:10. Claude GitHub App installed on the repo (needed to push): pending
+- H2 DubHacks rules answers and schedule: not on file. Hold status: RELEASED (D-28)
+- H3 done: GitHub linked, Claude can push to the new repo, Akash is pushing (account `azphalt`).
 - H5 hardware facts: pending
