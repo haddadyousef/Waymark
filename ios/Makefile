@@ -112,16 +112,23 @@ sim:
 # The demo phone is an iPhone 17 Pro Max on iOS 27; Xcode 27 does not create that device by
 # default — `make sim17` creates it once.
 SIM ?= iPhone 17 Pro Max
+# Waymark (plan D-07): where the simulator's GPS is parked for sim-grant / uitest / tour / island.
+# Default = the centre of the verified Project Sidewalk sample box in the University District,
+# Seattle, until P5 picks the demo route. `make uitest SIM_LAT=40.1140 SIM_LON=-88.2249` reproduces
+# the original UIUC location (Townsend Hall) for a like-for-like baseline. e2e.py parks the GPS
+# itself at the start of the route it replays.
+SIM_LAT ?= 47.6540
+SIM_LON ?= -122.3050
 # Pre-answer the permission prompts so no system alert races the first tap (fresh simulator / CI).
 sim-grant:
 	@xcrun simctl boot "$(SIM)" 2>/dev/null || true
 	@xcrun simctl bootstatus "$(SIM)" -b
 	@xcrun simctl privacy "$(SIM)" grant location $(BUNDLE)
 	@xcrun simctl privacy "$(SIM)" grant motion $(BUNDLE)
-	@xcrun simctl location "$(SIM)" set 40.1140,-88.2249
+	@xcrun simctl location "$(SIM)" set $(SIM_LAT),$(SIM_LON)
 
 # Every XCUITest in CaneKitUITests (the Street View test skips itself without CANEKIT_FRAME_DIR).
-# ⚠ Set a simulator location first (`xcrun simctl location <udid> set 40.1140,-88.2249`) or the route
+# ⚠ Set a simulator location first (sim-grant does it: SIM_LAT / SIM_LON above) or the route
 # tests fail for want of a GPS fix (AGENTS.md "Commands").
 uitest: sim-grant
 	$(XCB) -destination "platform=iOS Simulator,name=$(SIM)" CODE_SIGNING_ALLOWED=NO -only-testing:CaneKitUITests test
@@ -169,8 +176,12 @@ audit:
 
 # Create the demo-phone simulator once (Xcode 27 does not ship this device by default). Running it
 # again creates a second device with the same name; `-destination name=` then picks one of them.
+# Waymark (plan M1): the runtime is the newest iOS runtime Xcode has installed (Xcode 27.1 may ship
+# iOS 27.1 rather than 27.0). Override with SIM_RUNTIME=com.apple.CoreSimulator.SimRuntime.iOS-27-0.
+SIM_RUNTIME ?= $(shell xcrun simctl list runtimes 2>/dev/null | grep -o 'com\.apple\.CoreSimulator\.SimRuntime\.iOS-[0-9-]*' | tail -n 1)
 sim17:
-	xcrun simctl create "iPhone 17 Pro Max" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max com.apple.CoreSimulator.SimRuntime.iOS-27-0
+	@test -n "$(SIM_RUNTIME)" || { echo "No iOS simulator runtime installed — Xcode → Settings → Components → iOS"; exit 1; }
+	xcrun simctl create "iPhone 17 Pro Max" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max $(SIM_RUNTIME)
 
 # List paired / connected devices; copy the phone's identifier into DEVICE in local.mk.
 devices:
