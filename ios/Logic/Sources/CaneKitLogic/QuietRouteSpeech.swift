@@ -158,7 +158,7 @@ public enum RouteStatusLines {
     /// The one status line a route start may speak, or nil. Only a fact that changes what the walker
     /// does is spoken: with haptics down, obstacle cues arrive on the watch or as speech. No
     /// headphones ("No headphones. Beacon paused until AirPods connect.") and an unreachable watch
-    /// ("Watch not reachable. Open OpenCane on the watch.") are no longer spoken — the Guide card and
+    /// ("Watch not reachable. Open Waymark on the watch.") are no longer spoken — the Guide card and
     /// the "status" answer still say them. Caller: `AppModel.announceChannels`.
     /// - Parameters:
     ///   - headphonesConnected: `AudioRouteMonitor.headphonesConnected` (not spoken either way).

@@ -15,7 +15,7 @@
 //  `cannotTell`, `maxQuestionCharacters` 160), checked against the real `CloudSceneGate`.
 //  Caller: `SceneDescriber.ask` (cleans the question, sends `text(for:)` with one frame to the
 //  cloud model, gates the reply), reached from `AskSceneIntent` → `AppModel.askAboutScene`
-//  (HandsFreeIntents.swift, "Ask OpenCane").
+//  (HandsFreeIntents.swift, "Ask Waymark").
 //
 
 import Testing

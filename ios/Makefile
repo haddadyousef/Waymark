@@ -25,9 +25,12 @@
 # ⚠ Do not run two simulator targets (uitest / tour / e2e) at once on the same SIM: a contended
 # simulator starves the GPS replay and fails for reasons unrelated to the code (e2e.py fix_cadence).
 #
-# TEAM and DEVICE come from local.mk (git-ignored):
-#   TEAM   = ABCDE12345                # the OU= value of the Apple Development certificate (below)
-#   DEVICE = 00008150-000A1B2C3D4E5F   # make devices
+# TEAM, DEVICE and BUNDLE_PREFIX come from local.mk (git-ignored; template: local.mk.example):
+#   TEAM          = ABCDE12345                # the OU= value of the Apple Development certificate (below)
+#   DEVICE        = 00008150-000A1B2C3D4E5F   # make devices
+#   BUNDLE_PREFIX = com.yourname              # Waymark: unique per teammate → bundle id <prefix>.waymark
+# `make gen` also copies TEAM and BUNDLE_PREFIX into Config/Local.xcconfig so Xcode itself signs the
+# same way (scripts/gen.sh, Config/Waymark.xcconfig).
 # TEAM: add the Apple ID in Xcode (Settings > Accounts), `make gen`, open CaneKit.xcodeproj once,
 # CaneKit target > Signing & Capabilities > pick the Personal Team (creates the certificate). Then
 # read the Team ID in Xcode > Settings > Accounts > team details, or run
@@ -41,6 +44,11 @@
 # in the variable, and xcodebuild then cannot find the phone. Strip them.
 TEAM   := $(strip $(TEAM))
 DEVICE := $(strip $(DEVICE))
+BUNDLE_PREFIX := $(strip $(BUNDLE_PREFIX))
+# Same placeholder as Config/Waymark.xcconfig, so the simulator targets work on a fresh clone.
+ifeq ($(BUNDLE_PREFIX),)
+BUNDLE_PREFIX := com.example.waymark-dev
+endif
 
 # No-ops once the := lines above have run (they define both, possibly empty); kept as documentation
 # of the two variables. `make TEAM=… DEVICE=…` on the command line still overrides everything.
@@ -52,9 +60,12 @@ CONFIG ?= Debug
 DERIVED = build
 # The DEVICE build product installed by `make install` (the simulator product is ...-iphonesimulator).
 APP     = $(DERIVED)/Build/Products/$(CONFIG)-iphoneos/CaneKit.app
-# Frozen bundle id (AGENTS.md hard rule 6); also hard-coded in e2e.py and cue_audit.py.
-BUNDLE  = com.aritro.canekit
-XCB     = xcodebuild -project CaneKit.xcodeproj -scheme $(SCHEME) -configuration $(CONFIG) -derivedDataPath $(DERIVED)
+# The phone app's bundle id (Waymark: <BUNDLE_PREFIX>.waymark). Exported so scripts/e2e.py and
+# scripts/cue_audit.py launch / pull the same app (they read WAYMARK_BUNDLE).
+BUNDLE  = $(BUNDLE_PREFIX).waymark
+export WAYMARK_BUNDLE := $(BUNDLE)
+XCB     = xcodebuild -project CaneKit.xcodeproj -scheme $(SCHEME) -configuration $(CONFIG) -derivedDataPath $(DERIVED) \
+          BUNDLE_ID_PREFIX=$(BUNDLE_PREFIX)
 
 .PHONY: gen test build install launch run sim devices clean check-env uitest tour island sim17 sim-grant e2e uitest-streetview audit
 
@@ -70,6 +81,7 @@ test:
 check-env:
 	@test -n "$(TEAM)"   || { echo "TEAM is empty — put TEAM=<10-char team id> in ios/local.mk"; exit 1; }
 	@test -n "$(DEVICE)" || { echo "DEVICE is empty — run 'make devices' and put DEVICE=<id> in ios/local.mk"; exit 1; }
+	@test "$(BUNDLE_PREFIX)" != "com.example.waymark-dev" || { echo "BUNDLE_PREFIX is unset — put BUNDLE_PREFIX=com.<yourname> in ios/local.mk"; exit 1; }
 
 # Signed device build. -allowProvisioningUpdates / -allowProvisioningDeviceRegistration let a free
 # personal team create profiles and register the phone; the team id comes only from local.mk, so

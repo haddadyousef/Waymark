@@ -381,7 +381,7 @@ nonisolated final class SceneContext: Sendable {
 /// The on-device "vision language model": Vision sees, Foundation Models (or a template) speaks.
 /// Never throws in practice (every step degrades to a template or "NONE"), so it is the floor of
 /// the fallback chain. It ignores any prompt other than `HazardPrompt.text` — which is why
-/// `cloudPrimary` is nil for it and "Ask OpenCane" never reaches it.
+/// `cloudPrimary` is nil for it and "Ask Waymark" never reaches it.
 nonisolated struct OnDeviceVLMClient: VLMClient {
     /// Display / log name; the fallback client shows "<cloud> + On-device".
     let name = "On-device"

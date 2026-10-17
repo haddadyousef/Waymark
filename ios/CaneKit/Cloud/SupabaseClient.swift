@@ -2,7 +2,7 @@
 //  SupabaseClient.swift
 //  CaneKit
 //
-//  The transport half of OpenCane's cloud mirror: a hand-rolled PostgREST + Storage client over
+//  The transport half of Waymark's cloud mirror: a hand-rolled PostgREST + Storage client over
 //  `URLSession`. No SDK — AGENTS.md hard rule 2 forbids third-party packages, and the REST surface
 //  this app needs is four verbs wide.
 //

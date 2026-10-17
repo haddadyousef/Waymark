@@ -3,7 +3,7 @@
 //  CaneKitLogic
 //
 //  The AirPods "double nod to talk" gesture: two quick down-up nods of the head start voice
-//  input, so a walker with both hands busy (cane + dog / rail / door) can ask OpenCane a question
+//  input, so a walker with both hands busy (cane + dog / rail / door) can ask Waymark a question
 //  without the phone, the watch or Siri.
 //
 //  Purpose: keep the gesture's numbers (degrees, seconds) out of `HeadPoseTracker` so they can be

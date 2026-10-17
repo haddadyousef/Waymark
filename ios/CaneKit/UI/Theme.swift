@@ -216,7 +216,7 @@ struct CKBigButton: View {
     /// How the label is arranged. `row` = icon, word (+ subtitle) and chevron across the button,
     /// restacking only at accessibility text sizes; `tile` = icon over a centred word (+ subtitle),
     /// for a pair placed side by side. Step 47: the Guide's two-up "Where am I" / "Talk to
-    /// OpenCane" pair used `row`, and `ViewThatFits` kept the short title in a row while it
+    /// Waymark" pair used `row`, and `ViewThatFits` kept the short title in a row while it
     /// stacked the long one — two shapes in one pair, which the owner read as broken. A pair is
     /// always `tile`, and the pair's `HStack` gets `.fixedSize(horizontal: false, vertical: true)`
     /// so both tiles take the taller one's height.
@@ -254,7 +254,7 @@ struct CKBigButton: View {
 
     /// `tile`: icon over the word over the subtitle, all centred, filling the width and any
     /// height the pair's `HStack` gives it (≥ `CKMetrics.tile`). The word may wrap to two lines
-    /// ("Talk to OpenCane" at 17 Pro Max width) and shrinks to 90 % before it hyphenates.
+    /// ("Talk to Waymark" at 17 Pro Max width) and shrinks to 90 % before it hyphenates.
     private var tileLabel: some View {
         VStack(spacing: CKSpacing.xs) {
             Image(systemName: systemImage)

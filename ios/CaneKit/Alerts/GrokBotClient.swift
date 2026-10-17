@@ -69,7 +69,7 @@ nonisolated struct GrokBotClient: Sendable {
     /// page of HTML into a trip log.
     private static let maxLoggedBody = 300
 
-    private static let log = Logger(subsystem: "com.aritro.canekit", category: "grokbot")
+    private static let log = Logger(subsystem: "waymark", category: "grokbot")
 
     init(url: URL, key: String, session: URLSession = .shared) {
         self.url = url

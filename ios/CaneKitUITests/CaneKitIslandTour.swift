@@ -86,7 +86,7 @@ final class CaneKitIslandTour: XCTestCase {
 
         // Stop the route and check the island afterwards. Since Step 64 Stop leaves a closing card
         // (`AppModel.stopRoute` → `end(stopped: true)`, "Route stopped" for 10 s), so this picture,
-        // taken ~4 s after Stop, should show the OpenCane mark with "Stopped" — not an empty island.
+        // taken ~4 s after Stop, should show the Waymark mark with "Stopped" — not an empty island.
         // (Warming and arrived are not photographed: the simulator has no LiDAR, so a route skips
         // the warm-up, and the simulated walk to CIF takes ~7 min at 1.4 m/s.)
         app.activate()

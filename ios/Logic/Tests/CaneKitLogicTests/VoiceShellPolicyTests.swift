@@ -3,7 +3,7 @@
 //  CaneKitLogicTests
 //
 //  Purpose: pins VoiceShellPolicy.swift (when the shell may open the microphone on its own —
-//  at launch after "OpenCane ready.", and for a follow-up after an answer) and `ScenePhaseReason`
+//  at launch after "Waymark ready.", and for a follow-up after an answer) and `ScenePhaseReason`
 //  (the one word the `scene_phase` trip-log record uses for why the app left the foreground).
 //
 //  Why these are the tests: every unasked-for microphone open flips the audio session (hard
@@ -24,15 +24,15 @@ import Testing
 @Suite("Voice shell policy")
 struct VoiceShellPolicyTests {
 
-    /// Step 67: the launch says "OpenCane ready." and nothing else — no menu, no instructions (phone
-    /// log `canekit-2026-09-13T15-48-34Z.jsonl`: "OpenCane ready." then the 76-character eight-word
-    /// menu before the microphone opened; owner: "It should just be 'OpenCane ready' and then boom").
+    /// Step 67: the launch says "Waymark ready." and nothing else — no menu, no instructions (phone
+    /// log `canekit-2026-09-13T15-48-34Z.jsonl`: "Waymark ready." then the 76-character eight-word
+    /// menu before the microphone opened; owner: "It should just be 'Waymark ready' and then boom").
     /// A phone without LiDAR says that instead, because obstacle warnings cannot work. The listening
     /// tone follows (`launchListen`).
     @Test func launchSaysOnlyOpenCaneReady() {
-        #expect(VoiceShellPolicy.readyLine == "OpenCane ready.")
-        #expect(VoiceShellPolicy.launchLine(lidarSupported: true) == "OpenCane ready.")
-        #expect(VoiceShellPolicy.noLidarLine == "OpenCane. This phone has no LiDAR.")
+        #expect(VoiceShellPolicy.readyLine == "Waymark ready.")
+        #expect(VoiceShellPolicy.launchLine(lidarSupported: true) == "Waymark ready.")
+        #expect(VoiceShellPolicy.noLidarLine == "Waymark. This phone has no LiDAR.")
         #expect(VoiceShellPolicy.launchLine(lidarSupported: false) == VoiceShellPolicy.noLidarLine)
         for line in [VoiceShellPolicy.launchLine(lidarSupported: true), VoiceShellPolicy.launchLine(lidarSupported: false)] {
             let lower = line.lowercased()

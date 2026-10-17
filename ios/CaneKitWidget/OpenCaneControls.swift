@@ -3,13 +3,13 @@
 //  CaneKitWidget
 //
 //  Step 64 extras: the brand when no route runs.
-//    · `TalkControl` — a Control Center / Lock Screen / Action button control, "Talk to OpenCane",
+//    · `TalkControl` — a Control Center / Lock Screen / Action button control, "Talk to Waymark",
 //      that opens the app listening (`TalkControlIntent`, ios/Shared/Intents).
 //    · `OpenCaneAccessoryWidget` — a lock-screen accessory widget (circular + rectangular) showing
-//      the contour-ring mark; tapping opens the app to talk (`opencane://talk`, handled by
+//      the contour-ring mark; tapping opens the app to talk (`waymark://talk`, handled by
 //      `CaneKitApp.onOpenURL`).
 //
-//  Why: the Step 64 audit ruled out an idle "OpenCane ready — guarding" Live Activity (depth and
+//  Why: the Step 64 audit ruled out an idle "Waymark ready — guarding" Live Activity (depth and
 //  GPS are off in the background, so "guarding" would be false, and Live Activities are for tasks
 //  with an end). These carry the brand honestly: they start something, they claim nothing.
 //
@@ -22,19 +22,19 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
-/// Control Center / Lock Screen / Action button: "Talk to OpenCane".
+/// Control Center / Lock Screen / Action button: "Talk to Waymark".
 struct TalkControl: ControlWidget {
     /// Stable kind string (a rename orphans every placed control).
-    static let kind = "com.aritro.canekit.widget.talk"
+    static let kind = "waymark.widget.talk"
 
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: Self.kind) {
             ControlWidgetButton(action: TalkControlIntent()) {
-                Label("Talk to OpenCane", systemImage: "waveform.circle")
+                Label("Talk to Waymark", systemImage: "waveform.circle")
             }
         }
-        .displayName("Talk to OpenCane")
-        .description("Open OpenCane listening for a question or a destination.")
+        .displayName("Talk to Waymark")
+        .description("Open Waymark listening for a question or a destination.")
     }
 }
 
@@ -54,9 +54,9 @@ struct OpenCaneAccessoryProvider: TimelineProvider {
     }
 }
 
-/// Lock-screen accessory: the mark (circular) or mark + "OpenCane / Tap to talk" (rectangular).
+/// Lock-screen accessory: the mark (circular) or mark + "Waymark / Tap to talk" (rectangular).
 struct OpenCaneAccessoryWidget: Widget {
-    static let kind = "com.aritro.canekit.widget.accessory"
+    static let kind = "waymark.widget.accessory"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: Self.kind, provider: OpenCaneAccessoryProvider()) { _ in
@@ -64,8 +64,8 @@ struct OpenCaneAccessoryWidget: Widget {
                 .containerBackground(for: .widget) { AccessoryWidgetBackground() }
                 .widgetURL(OpenCaneLinks.talk)
         }
-        .configurationDisplayName("OpenCane")
-        .description("The OpenCane mark. Tap to open OpenCane and talk.")
+        .configurationDisplayName("Waymark")
+        .description("The Waymark mark. Tap to open Waymark and talk.")
         .supportedFamilies([.accessoryCircular, .accessoryRectangular])
     }
 }
@@ -80,18 +80,18 @@ private struct OpenCaneAccessoryView: View {
             HStack(spacing: 8) {
                 OpenCaneMark().stroke(lineWidth: 1.5).frame(width: 34, height: 34)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("OpenCane").font(.headline).widgetAccentable()
+                    Text("Waymark").font(.headline).widgetAccentable()
                     Text("Tap to talk").font(.caption)
                 }
                 Spacer(minLength: 0)
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("OpenCane. Tap to talk.")
+            .accessibilityLabel("Waymark. Tap to talk.")
         default:
             OpenCaneMark().stroke(lineWidth: 1.6)
                 .padding(6)
                 .widgetAccentable()
-                .accessibilityLabel("OpenCane. Tap to talk.")
+                .accessibilityLabel("Waymark. Tap to talk.")
         }
     }
 }

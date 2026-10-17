@@ -86,7 +86,7 @@ struct HazardsCard: View {
     private var hazardsCard: some View {
         @Bindable var model = model
         return CKCard(title: "Hazards", systemImage: "exclamationmark.triangle",
-                      caption: "What OpenCane warns you about beyond obstacles.") {
+                      caption: "What Waymark warns you about beyond obstacles.") {
             CKToggleRow(title: "Detect drop-offs", subtitle: "Curbs, holes and steps 1.5–3.5 m ahead",
                         isOn: $model.groundHazardsEnabled,
                         hint: "Warns about curbs, holes and drop-offs 1.5 to 3.5 meters ahead")
@@ -146,7 +146,7 @@ struct HazardsCard: View {
             // Disabled without headphone motion support — the nod comes from the AirPods.
             CKToggleRow(title: "Nod to talk", subtitle: "Nod twice with AirPods in to start talking",
                         isOn: $model.nodToTalkEnabled,
-                        hint: "Nod twice with AirPods on while walking a route to start talking to OpenCane. Off by default.")
+                        hint: "Nod twice with AirPods on while walking a route to start talking to Waymark. Off by default.")
                 .disabled(!model.head.isAvailable)
             if !model.head.isAvailable {
                 liveCaption("Connect AirPods that track head movement to use this.")

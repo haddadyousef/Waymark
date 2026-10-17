@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>OpenCane</string>
+	<string>Waymark</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,10 +22,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.aritro.canekit</string>
+			<string>$(BUNDLE_ID_PREFIX).waymark</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>opencane</string>
+				<string>waymark</string>
 			</array>
 		</dict>
 	</array>
@@ -36,21 +36,21 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>OpenCane uses the camera and LiDAR to detect obstacles between your waist and head.</string>
+	<string>Waymark uses the camera and LiDAR to detect obstacles between your waist and head.</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>OpenCane reads your step count for the arrival summary.</string>
+	<string>Waymark reads your step count for the arrival summary.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>OpenCane records the guided walk as a workout so the watch can keep giving cues.</string>
+	<string>Waymark records the guided walk as a workout so the watch can keep giving cues.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>OpenCane keeps guiding you with the screen locked. Always lets it do that without the blue location banner covering its own route card.</string>
+	<string>Waymark keeps guiding you with the screen locked. Always lets it do that without the blue location banner covering its own route card.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>OpenCane uses your location and heading to guide you along the route.</string>
+	<string>Waymark uses your location and heading to guide you along the route.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>OpenCane can listen for sirens, car horns and vehicle sounds to warn you about traffic you cannot see, and for spoken commands.</string>
+	<string>Waymark can listen for sirens, car horns and vehicle sounds to warn you about traffic you cannot see, and for spoken commands.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>OpenCane uses motion to tell when the cane is sweeping, to track your head direction with AirPods, and to count steps.</string>
+	<string>Waymark uses motion to tell when the cane is sweeping, to track your head direction with AirPods, and to count steps.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>OpenCane can take spoken commands.</string>
+	<string>Waymark can take spoken commands.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>UIBackgroundModes</key>

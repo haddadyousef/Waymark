@@ -11,7 +11,7 @@
 //    · `ConversationTurn` & `ConversationHistory` — rolling dialogue memory with tool invocations.
 //    · `ConversationTool` & `ConversationAction` — actions the assistant can perform.
 //
-//  Why it exists: the "Talk to OpenCane" assistant (Step 23: Action Button / mic / nod to talk) has
+//  Why it exists: the "Talk to Waymark" assistant (Step 23: Action Button / mic / nod to talk) has
 //  two answer paths — `FastPathIntentClassifier` (deterministic, no network) and a cloud model
 //  prompted by `ConversationPrompt` — and both need the same vocabulary of actions, the same
 //  short-term memory and the same telemetry snapshot, testable without the app.
@@ -224,7 +224,7 @@ public struct ToolInvocation: Sendable, Equatable, Codable {
     }
 }
 
-/// One round of spoken dialogue between the walker and OpenCane.
+/// One round of spoken dialogue between the walker and Waymark.
 ///
 /// Created by `ConversationCoordinator.handleQuery` for every non-empty query (fast path, scene
 /// path, no-cloud line and cloud path alike) and appended to `ConversationHistory`.
@@ -235,7 +235,7 @@ public struct ConversationTurn: Sendable, Equatable, Identifiable, Codable {
     public let timestamp: TimeInterval
     /// What the walker said or typed (trimmed).
     public let userQuery: String
-    /// What OpenCane answered (or the fallback line); nil until answered.
+    /// What Waymark answered (or the fallback line); nil until answered.
     public var agentResponse: String?
     /// The GPS fix at query time, nil with no fix.
     public let location: Coordinate?

@@ -42,7 +42,7 @@ public enum ConversationPrompt {
     /// code (`ConversationResponseParser.sanitizeSpoken`), because a model's compliance is a hope.
     /// Pinned (the "CRITICAL RULES" header) by `promptConstruction`.
     public static let systemInstruction: String = """
-    You are OpenCane, an intelligent navigation assistant clamped to a white cane for a blind pedestrian.
+    You are Waymark, an intelligent navigation assistant clamped to a white cane for a blind pedestrian.
     Your replies are SPOKEN via headphones while the user is actively walking.
 
     CRITICAL RULES:
@@ -120,7 +120,7 @@ public enum ConversationPrompt {
         var turnsText = ""
         for t in history.turns.suffix(3) {
             turnsText += "User: \(t.userQuery)\n"
-            if let r = t.agentResponse { turnsText += "OpenCane: \(r)\n" }
+            if let r = t.agentResponse { turnsText += "Waymark: \(r)\n" }
         }
 
         return """

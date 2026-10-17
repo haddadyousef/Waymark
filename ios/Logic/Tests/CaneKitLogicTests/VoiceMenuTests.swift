@@ -83,7 +83,7 @@ struct VoiceMenuTests {
     }
 
     /// Step 67 (owner: "when it immediately pops up there's a lot of jargon. It should just be
-    /// 'OpenCane ready'"): there is no launch menu any more. The only menu the shell ever speaks is
+    /// 'Waymark ready'"): there is no launch menu any more. The only menu the shell ever speaks is
     /// the numbered `helpLine`, and only when the walker asks for it — "help", "menu", "options" or
     /// "seven". It still names every item.
     @Test func theOnlyMenuIsTheOneTheWalkerAsksFor() {

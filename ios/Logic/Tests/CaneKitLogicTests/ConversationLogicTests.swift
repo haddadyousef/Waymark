@@ -113,7 +113,7 @@ struct ConversationLogicTests {
         #expect(FastPathIntentClassifier.classify(query: "battery level") == .answerStatus(aspect: .battery))
         #expect(FastPathIntentClassifier.classify(query: "are my airpods connected") == .answerStatus(aspect: .headphones))
         #expect(FastPathIntentClassifier.classify(query: "how far to next point") == .answerStatus(aspect: .route))
-        #expect(FastPathIntentClassifier.classify(query: "how is OpenCane doing") == .answerStatus(aspect: .all))
+        #expect(FastPathIntentClassifier.classify(query: "how is Waymark doing") == .answerStatus(aspect: .all))
     }
 
     @Test("FastPath parses voice markers and trends")

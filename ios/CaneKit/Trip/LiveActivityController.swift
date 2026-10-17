@@ -167,7 +167,7 @@ final class LiveActivityController {
     // MARK: Lifecycle
 
     /// Step 64: the activity in the `warming` phase while the depth readiness gate runs, so the
-    /// island shows OpenCane and a countdown (`Text(timerInterval:)`, no updates needed) instead of
+    /// island shows Waymark and a countdown (`Text(timerInterval:)`, no updates needed) instead of
     /// nothing. `start` later updates this same activity to walking. Review round: an existing
     /// activity (the indoor walk's, at the handover) is updated in place, a queued / deferred request
     /// is rewritten; only with neither is one requested.

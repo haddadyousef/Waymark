@@ -12,7 +12,7 @@
 //  app (`LiveActivityController`) cannot draw its own Dynamic Island. Added in Steps 8–9.
 //
 //  Owner / callers: the system loads the `CaneKitWidget` app-extension target (bundle id
-//  `com.aritro.canekit.widget`, frozen — AGENTS.md hard rule 6), embedded in `CaneKit.app` by
+//  `$(BUNDLE_ID_PREFIX).waymark.widget`, frozen — AGENTS.md hard rule 6), embedded in `CaneKit.app` by
 //  `ios/project.yml`. ⚠ It must land in `CaneKit.app/PlugIns/`: Step 14 found that a `gen.sh`
 //  patch had moved it out, so no installed build had ever shown the Live Activity and nothing
 //  failed loudly. `ios/scripts/gen.sh` now asserts the embed phase after a full generate (skipped
@@ -27,7 +27,7 @@
 import SwiftUI
 import WidgetKit
 
-/// `@main` entry of the `com.aritro.canekit.widget` extension; vends the Live Activity, the
+/// `@main` entry of the `$(BUNDLE_ID_PREFIX).waymark.widget` extension; vends the Live Activity, the
 /// accessory widget and the control.
 @main
 struct CaneKitWidgetBundle: WidgetBundle {

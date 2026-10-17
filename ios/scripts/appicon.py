@@ -1,4 +1,4 @@
-"""OpenCane icon v2 — 'White Cane'. A real mobility cane on the dark field: black
+"""Waymark icon v2 — 'White Cane'. A real mobility cane on the dark field: black
 straight grip, gold joint ring, white shaft with two red wraps, red tip.
 Renders 1024 PNGs into the iPhone + Watch AppIcon sets.
 

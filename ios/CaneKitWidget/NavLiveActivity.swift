@@ -2,7 +2,7 @@
 //  NavLiveActivity.swift
 //  CaneKitWidget
 //
-//  Lock screen + Dynamic Island + StandBy + watch Smart Stack for OpenCane: the brand mark, the
+//  Lock screen + Dynamic Island + StandBy + watch Smart Stack for Waymark: the brand mark, the
 //  phase (warming countdown, walking, indoor step, listening / thinking, arrived, stopped), the
 //  manoeuvre glyph and countdown distance, the obstacle glance and whether obstacle sensing is
 //  actually running — for the sighted spotter looking down at the phone clamped to the cane, and
@@ -10,7 +10,7 @@
 //
 //  Step 64 redesign (owner: "the island looks kind of bad… just a location icon thing"). The Step 64
 //  audit and the `make island` pictures found:
-//    · Nothing said OpenCane: a bare `figure.walk` + metres and a lone green check read as Fitness
+//    · Nothing said Waymark: a bare `figure.walk` + metres and a lone green check read as Fitness
 //      or a system indicator. Every presentation now carries the contour-ring mark
 //      (`OpenCaneMark`, ios/Shared/Brand) and the island keyline is tinted by alert level.
 //    · ⚠ SAFETY: the green "Path clear" showed on the lock screen while depth was paused. The
@@ -23,7 +23,7 @@
 //
 //  No interactive buttons on purpose (docs/design.md §6.7): "Next" / "Stop" from the lock screen is
 //  too easy to hit accidentally while walking with the phone on the cane shaft. Tapping anywhere
-//  opens the app (`widgetURL` opencane://guide). Colours are hard-coded ivory-on-ink so the widget
+//  opens the app (`widgetURL` waymark://guide). Colours are hard-coded ivory-on-ink so the widget
 //  target has no dependency on Theme.swift; every tint comes with a glyph and, off the compact
 //  bubble, a word.
 //
@@ -357,7 +357,7 @@ struct NavLiveActivity: Widget {
         switch state.phase {
         case .warming: return "to start"
         case .indoor: return state.stepCount > 0 ? "indoor step" : "indoors"
-        case .listening, .thinking: return "OpenCane"
+        case .listening, .thinking: return "Waymark"
         case .arrived: return "at destination"
         case .stopped: return "route ended"
         case .walking:
@@ -365,7 +365,7 @@ struct NavLiveActivity: Widget {
         }
     }
 
-    /// One spoken sentence per presentation: "OpenCane, on route ISR Townsend Hall to CIF: in 120
+    /// One spoken sentence per presentation: "Waymark, on route ISR Townsend Hall to CIF: in 120
     /// meters, turn right. Goodwin Avenue. Path is clear." Phase-specific openers for warming,
     /// indoor, voice and the final cards. Adds "No update for a while." when stale.
     fileprivate static func summary(_ state: NavActivityAttributes.ContentState, routeName: String,
@@ -376,21 +376,21 @@ struct NavLiveActivity: Widget {
         let stale = isStale ? " No update for a while." : ""
         switch state.phase {
         case .warming:
-            return "OpenCane\(route): obstacle detection warming up. The route starts automatically."
+            return "Waymark\(route): obstacle detection warming up. The route starts automatically."
         case .indoor:
             let step = progressLabel(state).map { "\($0). " } ?? ""
-            return "OpenCane indoors\(route): \(step)\(state.instruction) \(glance.spoken)\(stale)"
+            return "Waymark indoors\(route): \(step)\(state.instruction) \(glance.spoken)\(stale)"
         case .listening:
-            return "OpenCane is listening\(route). \(glance.spoken)"
+            return "Waymark is listening\(route). \(glance.spoken)"
         case .thinking:
-            return "OpenCane is thinking\(route). \(glance.spoken)"
+            return "Waymark is thinking\(route). \(glance.spoken)"
         case .arrived:
-            return "OpenCane\(route): arrived. \(state.instruction)"
+            return "Waymark\(route): arrived. \(state.instruction)"
         case .stopped:
-            return "OpenCane\(route): route stopped."
+            return "Waymark\(route): route stopped."
         case .walking:
             let dist = state.distanceM > 0 ? "in \(state.distanceM) meters, " : ""
-            return "OpenCane\(route): \(dist)\(manoeuvre.spoken). \(state.instruction) \(glance.spoken)\(stale)"
+            return "Waymark\(route): \(dist)\(manoeuvre.spoken). \(state.instruction) \(glance.spoken)\(stale)"
         }
     }
 }
@@ -399,9 +399,9 @@ struct NavLiveActivity: Widget {
 /// the app needs no handler — opening the app on the Guide is the whole action.
 enum OpenCaneLinks {
     /// The Guide.
-    static let guide = URL(string: "opencane://guide")!
-    /// Talk to OpenCane (accessory widget).
-    static let talk = URL(string: "opencane://talk")!
+    static let guide = URL(string: "waymark://guide")!
+    /// Talk to Waymark (accessory widget).
+    static let talk = URL(string: "waymark://talk")!
 }
 
 // MARK: - Pieces
@@ -610,7 +610,7 @@ private struct ActivityRootView: View {
 }
 
 /// Lock screen / banner:
-///   ◎ OpenCane · To CIF                 ● LiDAR live
+///   ◎ Waymark · To CIF                 ● LiDAR live
 ///   ↱  Turn right onto Goodwin…              42 m
 ///   [● Path clear]  ▬▬▬▬○──────        3 of 6
 private struct LockScreenCard: View {
@@ -625,7 +625,7 @@ private struct LockScreenCard: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
                 OpenCaneMark().stroke(keyline, lineWidth: 1.3).frame(width: 18, height: 18)
-                Text(routeName.isEmpty ? "OpenCane" : "OpenCane · \(routeName)")
+                Text(routeName.isEmpty ? "Waymark" : "Waymark · \(routeName)")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(IslandPalette.ivoryDim)
                     .lineLimit(1)

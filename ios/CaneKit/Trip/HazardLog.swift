@@ -12,7 +12,7 @@
 //  hazards from `groundHazardFound` with a 768 px frame; sign and vision hazards from
 //  `hazards.onHazard` with the scanner's frame). Read by `HazardsCard` (count, error line, share
 //  button). The GeoJSON is rewritten whole on each record (a walk produces tens of hazards, not
-//  thousands). Files are visible in Files → On My iPhone → OpenCane (`UIFileSharingEnabled`).
+//  thousands). Files are visible in Files → On My iPhone → Waymark (`UIFileSharingEnabled`).
 //
 //  Threading / isolation: `@MainActor @Observable`; file writes are small and infrequent, so they
 //  run synchronously on main.

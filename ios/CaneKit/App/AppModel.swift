@@ -383,11 +383,11 @@ final class AppModel {
                    cachedShare: speech.cachedShare(of: Self.voiceReadyLines),
                    unavailable: speech.naturalVoiceUnavailable)
     }
-    /// Whether OpenCane speaks the voice menu and starts listening at launch (disabled in automation).
+    /// Whether Waymark speaks the voice menu and starts listening at launch (disabled in automation).
     var listenOnLaunch: Bool = Settings.bool("listenOnLaunch", default: true) {
         didSet { Settings.set(listenOnLaunch, "listenOnLaunch") }
     }
-    /// Whether OpenCane opens a 5-second follow-up listening window after assistant responses.
+    /// Whether Waymark opens a 5-second follow-up listening window after assistant responses.
     var voiceFollowUp: Bool = Settings.bool("voiceFollowUp", default: true) {
         didSet { Settings.set(voiceFollowUp, "voiceFollowUp") }
     }
@@ -977,7 +977,7 @@ final class AppModel {
 
     /// "Nod to talk" (Hazards card switch, disabled when `head.isAvailable` is false;
     /// `HandsFreeOption.nodToTalk` by voice): a double head nod on the AirPods starts voice input,
-    /// so a walker with both hands busy can ask OpenCane a question without the phone, the watch
+    /// so a walker with both hands busy can ask Waymark a question without the phone, the watch
     /// or Siri. Default OFF. Plain stored property with no `didSet`: `wireHeadNod` reads it at
     /// each detected nod.
     ///
@@ -1125,7 +1125,7 @@ final class AppModel {
     /// - Parameter source: who pressed — the on-screen button or the Action Button intent. Written
     ///   to the trip log, so a walk recording shows a press the walker made but never heard an
     ///   answer to (AGENTS.md "make the invisible visible").
-    /// Callers: "Talk to OpenCane" (`GuideCard`), the Action Button intent.
+    /// Callers: "Talk to Waymark" (`GuideCard`), the Action Button intent.
     func toggleVoiceInput(source: String = "button") {
         logger.event("voice_toggle", ["source": source, "listening": !voiceInput.isListening])
         if voiceInput.isListening {
@@ -1161,7 +1161,7 @@ final class AppModel {
     /// the describer says at each corner of the route. Off unless the variable is set.
     static let describeEveryWaypoint = ProcessInfo.processInfo.environment["CANEKIT_DESCRIBE_EVERY_WAYPOINT"] == "1"
 
-    /// Logs every "Where am I" / "Ask OpenCane" outcome (sentence or error, latency, replay frame)
+    /// Logs every "Where am I" / "Ask Waymark" outcome (sentence or error, latency, replay frame)
     /// as `describe_result`, so a walk log shows what was actually said. Wired once in `start()`.
     /// Fields: `text`, `error`, `ms` (−1 unknown), `gate`, `cloud_text`, `question`, `provider`,
     /// `trigger`, `source`, `cloud_ms`, `fallback_reason`, `frame`, `labels`, `vision_error`,
@@ -1186,7 +1186,7 @@ final class AppModel {
                 "source": self?.describer.lastSource ?? "",
                 "cloud_ms": self?.describer.lastCloudMs ?? -1,
                 "fallback_reason": self?.describer.lastFallbackReason ?? "",
-                // "" for a plain "Where am I"; the walker's words for an "Ask OpenCane" run, so a
+                // "" for a plain "Where am I"; the walker's words for an "Ask Waymark" run, so a
                 // walk log shows which question an answer belonged to (an answer with no question
                 // beside it cannot be read back). Never `kind` or `t` — `TripLogRecord` owns those.
                 "question": self?.describer.lastQuestion ?? "",
@@ -1256,7 +1256,7 @@ final class AppModel {
     /// route start) + location prompt → depth callbacks → danger-sound wiring → `depth.start()`
     /// (or the debug sensor probe first) → hazards and describer wiring → voice-input wiring →
     /// the `start` log record → microphone watch if on → camera-denied check → warning-line and
-    /// common-line prefetch → "OpenCane ready." (`VoiceShellPolicy.launchLine`; no menu since Step 67)
+    /// common-line prefetch → "Waymark ready." (`VoiceShellPolicy.launchLine`; no menu since Step 67)
     /// + the launch listen → launch-recovery line → `--demo-route` hook →
     /// the detached multi-cam capability probe.
     /// ⚠ Do not reorder audio session → haptics → ARKit without a device test (AirPods route and
@@ -1338,7 +1338,7 @@ final class AppModel {
             // Surface it through the normal speech/watch channels immediately; if audio really is
             // unavailable, the watch status remains the non-auditory proof that guidance may be
             // silent and the user must recover the route before trusting it.
-            speech.say("Audio output is not ready. Guidance may be silent. Check OpenCane audio settings.",
+            speech.say("Audio output is not ready. Guidance may be silent. Check Waymark audio settings.",
                        .safety, ttl: 30)   // `.safety`: an uncached line is the system voice at once
             watch.send(status: "Audio output not ready", distanceM: -1)
             logger.event("audio_session", ["state": "startup_failed", "error": audioError])
@@ -1475,10 +1475,10 @@ final class AppModel {
         // speaks in the system voice by design, so it is requested before anything else.
         speech.prefetch(Self.voiceReadyLines)
         if !cameraDenied {
-            // Step 67: "OpenCane ready." and then the listening tone — nothing else (owner: "It should
-            // just be 'OpenCane ready' and then boom"). `Self.commonLines` prefetches the same
+            // Step 67: "Waymark ready." and then the listening tone — nothing else (owner: "It should
+            // just be 'Waymark ready' and then boom"). `Self.commonLines` prefetches the same
             // constant (`VoiceShellPolicy.readyLine`), so the natural-voice cache hits by bytes. The
-            // product is called OpenCane to a human; the code, module and bundle id are still
+            // product is called Waymark to a human; the code, module and bundle id are still
             // CaneKit (AGENTS.md → "The name split").
             speech.say(VoiceShellPolicy.launchLine(lidarSupported: lidarSupported), .nav)
             listenAfterLaunchLine()
@@ -1497,10 +1497,10 @@ final class AppModel {
 
     // MARK: Voice shell (Steps 58, 60, 67)
 
-    /// Launch: once the launch line ("OpenCane ready.") has drained, open the microphone once — the
+    /// Launch: once the launch line ("Waymark ready.") has drained, open the microphone once — the
     /// listening tone is the whole instruction. Step 67 removed the launch menu (owner, on
     /// `canekit-2026-09-13T15-48-34Z.jsonl`: "when it immediately pops up there's a lot of jargon. It
-    /// should just be 'OpenCane ready' and then boom"); "help" / "menu" / "options" read the list.
+    /// should just be 'Waymark ready' and then boom"); "help" / "menu" / "options" read the list.
     /// `VoiceShellPolicy.launchListen` decides; the permission inputs are "not refused" rather than
     /// "granted": on a first launch the owner wants the microphone and speech prompts to appear right
     /// away, because the voice shell is the app. Never under automation (`SpeechQueue.muted`), so UI
@@ -1711,7 +1711,7 @@ final class AppModel {
     /// The walker cannot see that a switch moved, and an app that silently drops features is worse
     /// than one that admits it: `.nav` priority so it never steps on an obstacle warning, with a
     /// ttl so it is dropped rather than spoken late if the walker is already moving.
-    /// Caller: `start()`, after "OpenCane ready."
+    /// Caller: `start()`, after "Waymark ready."
     private func announceLaunchRecovery() {
         guard let line = LaunchRecovery.spokenLine(for: Settings.launchMode) else { return }
         logger.event("launch_recovery", ["cleared": LaunchRecovery.optionalFeatureKeys,
@@ -1904,7 +1904,7 @@ final class AppModel {
                 // alive for the short teardown window so suspension cannot strand camera inputs in
                 // the background. The expiration handler only records the boundary; the normal
                 // serialized stop still owns all AVFoundation teardown.
-                let backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "Release OpenCane cameras") { [weak self] in
+                let backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "Release Waymark cameras") { [weak self] in
                     self?.logger.event("both_cameras", ["action": "background_teardown_expired"])
                 }
                 serializeBothCameras { [weak self] in
@@ -2356,7 +2356,7 @@ final class AppModel {
     ///      distance warnings and sign reading are paused." at `.nav`; turning it off speaks
     ///      "Both cameras off. Obstacle detection is restarting." and, 2 s later, "Obstacle
     ///      detection is back." only if depth is really delivering — otherwise "Obstacle detection
-    ///      did not restart. Close and reopen OpenCane." at `.safety`. A refusal (route guiding or
+    ///      did not restart. Close and reopen Waymark." at `.safety`. A refusal (route guiding or
     ///      starting, unsupported phone) snaps the switch back, sets `routeError` and says why.
     ///      A silent loss of the safety channel is
     ///      unacceptable in this app (AGENTS.md rule 6, "safety beats features").
@@ -2495,7 +2495,7 @@ final class AppModel {
                     if back {
                         self.speech.say("Obstacle detection is back.", .nav, ttl: 8)
                     } else {
-                        self.speech.say("Obstacle detection did not restart. Close and reopen OpenCane.",
+                        self.speech.say("Obstacle detection did not restart. Close and reopen Waymark.",
                                         .safety, ttl: 30)
                     }
                 }
@@ -2790,9 +2790,9 @@ final class AppModel {
         p.jpegSnapshot(maxDimension: maxDimension, quality: 0.6)
     }
 
-    /// Camera refused → the whole obstacle channel is dead; say so instead of "OpenCane ready."
+    /// Camera refused → the whole obstacle channel is dead; say so instead of "Waymark ready."
     /// and silence (Muse H3). `.notDetermined` is fine: ARKit prompts on first run.
-    /// - Returns: true when the camera is refused (so `start()` skips "OpenCane ready.", which
+    /// - Returns: true when the camera is refused (so `start()` skips "Waymark ready.", which
     ///   would contradict the warning; Antigravity docs review).
     /// Callers: `start()`, `beginRoute` (to choose the degraded no-interlock path) and
     /// `startRouteNow` (to put the error back on screen after its own clear). `routeError` is set
@@ -2801,13 +2801,13 @@ final class AppModel {
     private func announceCameraDenied() -> Bool {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         guard status == .denied || status == .restricted else { return false }
-        routeError = "Camera is off for OpenCane"
+        routeError = "Camera is off for Waymark"
         // Launch and route start both check: speak it once a minute, not twice in a row
         // (Antigravity, final review: the demo-route launch queued the 20 s warning twice).
         let now = Date()
         if now.timeIntervalSince(cameraDeniedSpokenAt) > 60 {
             cameraDeniedSpokenAt = now
-            speech.say("Camera access is off, so obstacle warnings cannot work. Turn on Camera for OpenCane in Settings.", .nav, ttl: 20)
+            speech.say("Camera access is off, so obstacle warnings cannot work. Turn on Camera for Waymark in Settings.", .nav, ttl: 20)
         }
         return true
     }
@@ -3185,7 +3185,7 @@ final class AppModel {
             self.pushStatusToWatch()
         }
         location.onAuthorizationChange = { [weak self] status, armed in
-            // Evidence for the island question: "always" + false means OpenCane owns the island.
+            // Evidence for the island question: "always" + false means Waymark owns the island.
             self?.logger.event("location_auth", ["status": status, "background_session": armed, "at": "change"])
         }
         location.onHeading = { [weak self] h, fromCourse in
@@ -3408,7 +3408,7 @@ final class AppModel {
     /// first, then the nearest reasonable MKLocalSearch result (`RouteSource.walking(to: .query)`,
     /// which tries `CampusPlaces.match` and falls back to `RouteSource.mapKit(to:from:)`).
     /// Called by `startMapKitRoute()`, a tapped MapKit suggestion in `DestinationField`,
-    /// `TakeMeToIntent` (Siri "Take me somewhere in OpenCane" → "Where do you want to go?") and
+    /// `TakeMeToIntent` (Siri "Take me somewhere in Waymark" → "Where do you want to go?") and
     /// `ConversationCoordinator` ("take me to …" by voice). Shows the text in the destination field.
     /// - Parameter query: free text; trimmed of spaces here.
     func navigate(to query: String) {
@@ -3427,7 +3427,7 @@ final class AppModel {
     }
 
     /// Walking route from the current fix to a gazetteer entrance, no search (Siri "Take me to
-    /// Grainger in OpenCane" → `TakeMeToIntent` with a `CampusDestination`; a tapped CAMPUS row in
+    /// Grainger in Waymark" → `TakeMeToIntent` with a `CampusDestination`; a tapped CAMPUS row in
     /// `DestinationField`). Puts `place.name` in the destination field.
     /// - Parameter place: a `CampusPlaces` entry; its entrance coordinate is used as-is.
     func navigate(to place: CampusPlace) {
@@ -3680,7 +3680,7 @@ final class AppModel {
     /// only: the *generated* warning lines (obstacle names, approach cues, signs, ground hazards)
     /// are enumerated by `SpokenPhrases` in CaneKitLogic, which owns their templates so they
     /// cannot drift by a byte.
-    /// ⚠ The product name a human hears is **OpenCane**; the code/module/bundle id stay CaneKit
+    /// ⚠ The product name a human hears is **Waymark**; the code/module/bundle id stay CaneKit
     /// (AGENTS.md → "The name split"). If the spoken name ever changes again, change it here and
     /// at the `speech.say` call in `start()` in the same edit — they are matched by bytes, not by
     /// a constant, so a half-rename is silent and only shows up as a line in the wrong voice.
@@ -3860,7 +3860,7 @@ final class AppModel {
             }
         }
         watch.send(status: "Obstacle detection warming up", distanceM: -1)
-        // Step 64: the island shows OpenCane and a countdown while depth warms up (the same
+        // Step 64: the island shows Waymark and a countdown while depth warms up (the same
         // activity becomes the walk in `startRouteNow`; `cancelPendingRouteStart` ends it).
         liveActivity.beginWarmup(routeName: route.name, line: "Obstacle detection warming up",
                                  waitSeconds: DepthReadiness.standardConfiguration.timeout)
@@ -4209,8 +4209,8 @@ final class AppModel {
     /// review round 5). Not rate-limited: each attempt is a fresh request that deserves an answer.
     private func announceLocationDenied() -> Bool {
         guard location.authorizationDenied else { return false }
-        routeError = "Location is off for OpenCane"
-        speech.say("Location access is off. Turn on Location for OpenCane in Settings to navigate.", .nav, ttl: 20)
+        routeError = "Location is off for Waymark"
+        speech.say("Location access is off. Turn on Location for Waymark in Settings to navigate.", .nav, ttl: 20)
         return true
     }
 

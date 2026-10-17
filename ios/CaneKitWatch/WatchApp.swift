@@ -3,7 +3,7 @@
 //  CaneKit Watch
 //
 //  watchOS companion entry point (`@main` of the `CaneKitWatch` target, bundle id
-//  `com.aritro.canekit.watchkitapp`, display name OpenCane). Scaffolded in Steps 1–2 to prove the
+//  `$(BUNDLE_ID_PREFIX).waymark.watchkitapp`, display name Waymark). Scaffolded in Steps 1–2 to prove the
 //  target builds, signs and installs; Step 5 added WatchConnectivity, wrist haptics, crown input
 //  and the walking-workout keep-alive, all of which live in `WatchModel`, not here.
 //

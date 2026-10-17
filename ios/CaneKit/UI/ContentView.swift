@@ -26,7 +26,7 @@ import CaneKitLogic
 import SwiftUI
 import UIKit
 
-/// The app's root: a `NavigationStack` titled "OpenCane" around the selected page and `CKTabBar`.
+/// The app's root: a `NavigationStack` titled "Waymark" around the selected page and `CKTabBar`.
 ///
 /// Reads everything from the shared `AppModel` (injected by the app entry). Owns the selected
 /// `RootTab`. Also hosts the invisible `CameraControlInteraction`: a Camera Control / volume
@@ -49,7 +49,7 @@ struct ContentView: View {
     /// Distinct title for each top-level tab.
     private var navigationTitleText: String {
         switch tab {
-        case .guide: "OpenCane"
+        case .guide: "Waymark"
         case .sense: "Details"
         case .settings: "Settings"
         case .profile: "Profile"
@@ -57,7 +57,7 @@ struct ContentView: View {
     }
 
     /// Page (re-identified per tab so the transition runs) above the tab bar, on the ivory ground,
-    /// titled "OpenCane", with the invisible Camera Control interaction behind everything.
+    /// titled "Waymark", with the invisible Camera Control interaction behind everything.
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -330,7 +330,7 @@ private struct FamilyContactsEditor: View {
         CKBigButton(title: "Save family emails",
                     systemImage: "person.crop.circle.badge.checkmark",
                     role: model.familyContactsNeedSave ? .primary : .secondary,
-                    hint: "Saves the list with the OpenCane alert service, which emails your family after a fall or SOS",
+                    hint: "Saves the list with the Waymark alert service, which emails your family after a fall or SOS",
                     value: saving ? "Saving" : nil) {
             save()
         }
@@ -380,7 +380,7 @@ private struct IndoorRecordCard: View {
     var body: some View {
         @Bindable var indoor = model.indoor
         CKCard(title: "Record an indoor route", systemImage: "record.circle") {
-            Text("Walk once from a room to the exit door with a sighted helper. OpenCane counts steps and turns — tap Add landmark to name what you pass.")
+            Text("Walk once from a room to the exit door with a sighted helper. Waymark counts steps and turns — tap Add landmark to name what you pass.")
                 .font(CKFont.secondary).foregroundStyle(CKColor.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             if indoor.isRecording {
@@ -475,7 +475,7 @@ private struct SettingsPage: View {
         }
     }
 
-    /// "Cues" card (Step 36, cue design v2): how much OpenCane volunteers, and where the walker is.
+    /// "Cues" card (Step 36, cue design v2): how much Waymark volunteers, and where the walker is.
     ///
     /// Two segmented pickers, first on the page because they are the settings a walker changes most:
     /// "Cue detail" (Quiet / Standard / Detailed, default Detailed = today) and "Place" (Outdoors /
@@ -487,7 +487,7 @@ private struct SettingsPage: View {
     /// - Parameter model: the `@Bindable` model from `body`.
     private func cueSettings(_ model: Bindable<AppModel>) -> some View {
         CKCard(title: "Alerts", systemImage: "bell.badge",
-               caption: "How much OpenCane says and taps while you walk.") {
+               caption: "How much Waymark says and taps while you walk.") {
             // A segmented picker does not show or speak its own title on iOS, so each gets a visible
             // label and a VoiceOver container named after it; otherwise a swipe hears "Quiet, button"
             // with no context, next to the speech pill that also says "Quiet" (Step 36 review).
@@ -499,7 +499,7 @@ private struct SettingsPage: View {
             .pickerStyle(.segmented)
             .accessibilityElement(children: .contain)
             .accessibilityLabel("Cue detail")
-            .accessibilityHint("How much OpenCane says and taps on its own. Quiet names nothing, reads only safety signs and taps only for head height. Standard taps once at 1.5 meters and a strong triple at 0.6, with no side taps. Detailed taps continuously ahead and for the sides. Head height warnings are the same at every level.")
+            .accessibilityHint("How much Waymark says and taps on its own. Quiet names nothing, reads only safety signs and taps only for head height. Standard taps once at 1.5 meters and a strong triple at 0.6, with no side taps. Detailed taps continuously ahead and for the sides. Head height warnings are the same at every level.")
             Text("Where you are").font(CKFont.secondary).foregroundStyle(CKColor.textSecondary)
                 .accessibilityHidden(true)
             Picker("Place", selection: model.cuePlace) {
@@ -618,7 +618,7 @@ private struct SettingsPage: View {
             // see the dark, so the app notices it for them.
             CKToggleRow(title: "Flashlight in the dark", subtitle: "Turns on by itself during a route when it's dark",
                         isOn: model.autoTorchInDark,
-                        hint: "When it's dark during a route, OpenCane turns the flashlight on so the cameras can see and drivers can see you, and off again when it's light or the route ends. Obstacle detection works in the dark either way.")
+                        hint: "When it's dark during a route, Waymark turns the flashlight on so the cameras can see and drivers can see you, and off again when it's light or the route ends. Obstacle detection works in the dark either way.")
             // ⚠ test contract: switches["Write trip log"].
             CKToggleRow(title: "Write trip log", subtitle: "Saves walk details for troubleshooting",
                         isOn: model.loggingEnabled,
@@ -644,7 +644,7 @@ private struct SettingsPage: View {
                caption: "Let family know if something goes wrong on a walk.") {
             CKToggleRow(title: "Alert my family", subtitle: "Falls, close calls and low battery",
                         isOn: model.familyAlertsEnabled,
-                        hint: "Sends falls, close obstacles, low battery and your position every few minutes to the OpenCane alert service, which decides whether to text your family")
+                        hint: "Sends falls, close obstacles, low battery and your position every few minutes to the Waymark alert service, which decides whether to text your family")
                 .disabled(!self.model.family.isConfigured)
             if !self.model.family.isConfigured {
                 Text("Family alerts aren't set up on this phone yet.")
@@ -812,7 +812,7 @@ private struct SceneEngineCard: View {
         let f = facts(at: Date())
         let chain = SceneEngineSummary.chain(f)
         CKCard(title: "Recent activity", systemImage: "sparkles",
-               caption: "What answered your last question and what OpenCane is watching for.") {
+               caption: "What answered your last question and what Waymark is watching for.") {
             HStack(spacing: CKSpacing.sm) {
                 CKStatusPill(text: chain.text, tone: .neutral, systemImage: "brain",
                              spoken: chain.spoken)
@@ -837,7 +837,7 @@ private struct SceneEngineCard: View {
                 VStack(alignment: .leading, spacing: CKSpacing.md) {
                     row("Hazards", SceneEngineSummary.hazardWatch(live))
                     // Step 49: "Light: lit (640 lux)" / "Light: dark (12 lux) · flashlight on (by
-                    // OpenCane)" / "… flashlight off — cameras may miss things" / "Light: unknown".
+                    // Waymark)" / "… flashlight off — cameras may miss things" / "Light: unknown".
                     // In the timeline so the lux number refreshes every 10 s; a state change redraws
                     // it at once through `model.lightState`.
                     row("Light", SceneEngineSummary.light(live))

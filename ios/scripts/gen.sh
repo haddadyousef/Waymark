@@ -38,6 +38,28 @@ if [ ! -f CaneKit/Resources/Secrets.plist ]; then
   echo "gen.sh: created CaneKit/Resources/Secrets.plist from the example (fill in keys for step 8)"
 fi
 
+# 1b. Waymark signing — copy TEAM and BUNDLE_PREFIX from local.mk (git-ignored) into
+#     Config/Local.xcconfig (git-ignored), which Config/Waymark.xcconfig includes last. That way the
+#     Makefile and a plain "open CaneKit.xcodeproj → Run" in Xcode sign with the same team and the
+#     same bundle ids. Without local.mk an existing Local.xcconfig is left alone.
+if [ -f local.mk ]; then
+  mk_value() {  # value of `NAME = value  # comment` in local.mk, trimmed; empty when absent
+    sed -n -E "s/^[[:space:]]*$1[[:space:]]*[:?]?=[[:space:]]*([^#[:space:]]*).*/\1/p" local.mk | tail -n 1
+  }
+  LOCAL_TEAM="$(mk_value TEAM)"
+  LOCAL_PREFIX="$(mk_value BUNDLE_PREFIX)"
+  {
+    echo "// Written by scripts/gen.sh from ios/local.mk — edit local.mk, not this file. Git-ignored."
+    [ -n "$LOCAL_TEAM" ] && echo "DEVELOPMENT_TEAM = $LOCAL_TEAM"
+    [ -n "$LOCAL_PREFIX" ] && echo "BUNDLE_ID_PREFIX = $LOCAL_PREFIX"
+    true
+  } > Config/Local.xcconfig
+  echo "gen.sh: wrote Config/Local.xcconfig (team ${LOCAL_TEAM:-unset}, bundle prefix ${LOCAL_PREFIX:-unset})"
+  if [ -z "$LOCAL_PREFIX" ]; then
+    echo "gen.sh: WARNING — BUNDLE_PREFIX is not set in local.mk; device builds will use the placeholder com.example.waymark-dev" >&2
+  fi
+fi
+
 # Phone-only variant: strip the watch target and its embed dependency from a temp spec.
 SPEC=project.yml
 if [ "$WATCH" = "0" ]; then

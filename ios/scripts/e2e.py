@@ -89,7 +89,8 @@ ROUTE = IOS / "CaneKit/Resources/route_isr_cif.json"
 APP = IOS / "build/Build/Products/Debug-iphonesimulator/CaneKit.app"
 # Report (report.json) and one copied trip log per scenario (<name>.jsonl); git-ignored with build/.
 OUT = IOS / "build/e2e"
-BUNDLE = "com.aritro.canekit"
+# Waymark: the Makefile exports WAYMARK_BUNDLE (<BUNDLE_PREFIX>.waymark from local.mk).
+BUNDLE = os.environ.get("WAYMARK_BUNDLE", "com.example.waymark-dev.waymark")
 # frames.json (committed) + the git-ignored Street View JPEGs; handed to the app as CANEKIT_FRAME_DIR.
 STREETVIEW = IOS / "scripts/streetview"
 # Step 66 stress campaign: traces/*.json + routes/*.json from scripts/stress/build_routes.py.

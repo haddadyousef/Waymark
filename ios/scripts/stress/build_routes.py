@@ -155,7 +155,7 @@ def write_trace(name: str, route: str, source: str, points: list, extra: dict | 
     trk = "\n".join(f'      <trkpt lat="{lat}" lon="{lon}"/>' for lat, lon in points)
     (HERE / "traces" / f"{name}.gpx").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<gpx version="1.1" creator="OpenCane build_routes.py" xmlns="http://www.topografix.com/GPX/1/1">\n'
+        '<gpx version="1.1" creator="Waymark build_routes.py" xmlns="http://www.topografix.com/GPX/1/1">\n'
         f'  <trk><name>{name}</name><trkseg>\n{trk}\n  </trkseg></trk>\n</gpx>\n')
     print(f"  {name}: {len(points)} points, {length:.0f} m → route {route}")
 

@@ -35,7 +35,7 @@
 //  Owner: `AppModel.speakStatus()` (app, HandsFreeIntents.swift) fills `StatusFacts` from the live
 //  engines, speaks each of `lines(_:)` at `.scene` (the lowest priority, TTL 20 s) so a status
 //  answer can never delay a warning, and logs `status_spoken` with `sentence(_:)`.
-//  Callers: `StatusIntent` (Siri "How is OpenCane doing" / Shortcuts / Action button) →
+//  Callers: `StatusIntent` (Siri "How is Waymark doing" / Shortcuts / Action button) →
 //  `speakStatus()`; `AppModel.setHapticsSilenced` (`hapticsLine(healthy:silenced:watchReachable:)`
 //  as the voice confirmation); `ConversationCoordinator` (the conversational assistant answers a
 //  status question with one clause — `gpsLine`, `audioLine`, `routeLine`, `batteryLine`,

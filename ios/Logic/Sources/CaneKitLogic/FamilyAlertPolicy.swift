@@ -125,7 +125,7 @@ public struct FamilyAlertPolicy {
         guard pct <= limits.lowBatteryPct, batteryArmed else { return nil }
         batteryArmed = false
         return OpenCaneEvent(type: .lowBattery, severity: .warn,
-                             note: "Phone battery at \(pct) percent. OpenCane guidance stops when it dies.",
+                             note: "Phone battery at \(pct) percent. Waymark guidance stops when it dies.",
                              batteryPct: pct)
     }
 
@@ -139,7 +139,7 @@ public struct FamilyAlertPolicy {
 
     /// Suspected fall. Never rate-limited and always `critical` — a second fall report while the
     /// first is still being handled is information, not noise.
-    /// - Note: **OpenCane has no fall detector yet.** This builds the event; nothing in the app
+    /// - Note: **Waymark has no fall detector yet.** This builds the event; nothing in the app
     ///   calls it except the debug test-send. See docs/todo.md.
     public static func fall(lat: Double?, lng: Double?, note: String?) -> OpenCaneEvent {
         OpenCaneEvent(type: .fall, severity: .critical, lat: lat, lng: lng,

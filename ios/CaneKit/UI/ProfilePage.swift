@@ -48,7 +48,7 @@ struct ProfilePage: View {
     /// `CloudSync` stops being a no-op seam, this sentence changes in the same commit.
     private func privacyCard(model: Bindable<AppModel>) -> some View {
         CKCard(title: "Privacy", systemImage: "lock.fill") {
-            CKToggleRow(title: "Share data with OpenCane cloud", subtitle: "Medical ID, family contacts and walk summaries",
+            CKToggleRow(title: "Share data with Waymark cloud", subtitle: "Medical ID, family contacts and walk summaries",
                         isOn: model.cloudSharingEnabled)
                 .accessibilityHint("When on, uploads your Medical ID, family contacts, a summary of each walk with where it started and ended, and any hazard the cane detects, with its photo. The detailed trip log, your settings and anything you say stay on this phone. Off stops future uploads.")
                 .disabled(!self.model.cloud.isConfigured)

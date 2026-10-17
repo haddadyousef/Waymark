@@ -2,7 +2,7 @@
 //  CloudSchema.swift
 //  CaneKitLogic
 //
-//  The wire schema for OpenCane's Supabase mirror, and every number that decides when a row
+//  The wire schema for Waymark's Supabase mirror, and every number that decides when a row
 //  leaves the phone. Pure: no URLSession, no UserDefaults, no clock of its own.
 //
 //  What this is for. Until Step 45 everything the app knew lived on the phone: settings in
@@ -720,7 +720,7 @@ public struct MobilityDayRow: Sendable, Equatable, Encodable {
     }
 }
 
-/// One spoken question and the answer OpenCane gave.
+/// One spoken question and the answer Waymark gave.
 ///
 /// ⚠ **Not written by the shipped app** (Step 60): a transcript never leaves the phone and
 /// `CloudSync.recordConversationTurn` is a no-op seam. Kept with its tests as the wire contract.

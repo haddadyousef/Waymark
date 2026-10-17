@@ -15,7 +15,7 @@
 //
 //  Readers: `ConversationCoordinator.markers` (the posts sent to the cloud model as
 //  `savedMarkers`, and the "Marker N" default name). No view shows the posts or shares the file
-//  yet; the JSON is reachable through Files → On My iPhone → OpenCane (`UIFileSharingEnabled`).
+//  yet; the JSON is reachable through Files → On My iPhone → Waymark (`UIFileSharingEnabled`).
 //  Nothing ever deletes a post.
 //
 //  Threading / isolation: `@MainActor @Observable`; file writes are small and infrequent, so they

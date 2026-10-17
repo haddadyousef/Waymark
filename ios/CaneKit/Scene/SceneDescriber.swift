@@ -13,7 +13,7 @@
 //  more: "Describing." (3 s TTL) was removed in Steps 29–33 — the button's "Describing…" state
 //  and the Action button's own tick carry progress instead.
 //
-//  Also "Ask OpenCane" (Step 16, `ask(_:)`): one question about the same frame, answered by the
+//  Also "Ask Waymark" (Step 16, `ask(_:)`): one question about the same frame, answered by the
 //  cloud model directly (never by the on-device fallback, which ignores prompts).
 //
 //  Owner: `AppModel.describer`, built in `AppModel.init` with `depth.processor`, `speech`, the
@@ -194,7 +194,7 @@ final class SceneDescriber {
         run(question: nil, trigger: trigger)
     }
 
-    /// "Ask OpenCane …": one question about the frame in front of the cane, one sentence back.
+    /// "Ask Waymark …": one question about the frame in front of the cane, one sentence back.
     ///
     /// Deliberately **not** a conversation. The research this shape comes from is written up in
     /// `QuestionPrompt` (CaneKitLogic): blind users want to ask rather than only listen, but the
@@ -222,7 +222,7 @@ final class SceneDescriber {
         return run(question: cleaned, trigger: .question)
     }
 
-    /// The shared body of "Where am I" (`question == nil`) and "Ask OpenCane" (a question).
+    /// The shared body of "Where am I" (`question == nil`) and "Ask Waymark" (a question).
     ///
     /// One run at a time for both, because they share the one camera frame and the one voice: a
     /// question fired while a description is in flight is dropped, exactly as a double press on the

@@ -5,12 +5,12 @@
 //  Reads what the vision model said about the scene and decides whether it described a threat to
 //  the walker — a weapon, or someone behaving like a robber — worth waking the family.
 //
-//  Why text and not a detector: OpenCane already asks a vision-language model what is ahead
+//  Why text and not a detector: Waymark already asks a vision-language model what is ahead
 //  (`HazardPrompt`, `ScenePrompt`). That reply is the only place a gun or a knife would ever be
 //  named, so this is where the decision belongs. There is no weapon classifier on the phone and
 //  writing one is not a hackathon-weekend job.
 //
-//  ⚠ **This is the one place in OpenCane where a false positive is genuinely expensive**: it emails
+//  ⚠ **This is the one place in Waymark where a false positive is genuinely expensive**: it emails
 //  a family that their blind relative may be being robbed. So the matching is deliberately strict:
 //    · whole words only ("gunmetal", "knife-edge" and "shotgun microphone" do not match);
 //    · a benign collocation cancels the match ("knife and fork", "nail gun", "toy gun");
@@ -122,11 +122,11 @@ public enum ThreatWatch {
     /// The event for a sighting. `critical`, like a fall: if this is real the walker needs someone
     /// now, and the bot's rule is that critical reaches family.
     ///
-    /// The note quotes the model rather than asserting a fact, because that is all OpenCane knows:
-    /// "OpenCane's camera described: …". A family member reading it can judge for themselves.
+    /// The note quotes the model rather than asserting a fact, because that is all Waymark knows:
+    /// "Waymark's camera described: …". A family member reading it can judge for themselves.
     public static func event(_ sighting: ThreatSighting, lat: Double?, lng: Double?) -> OpenCaneEvent {
         var event = OpenCaneEvent(type: .threat, severity: .critical, lat: lat, lng: lng,
-                                  note: "Possible \(sighting.term) seen. OpenCane's camera described: \(sighting.text)")
+                                  note: "Possible \(sighting.term) seen. Waymark's camera described: \(sighting.text)")
         event.extra = ["threat_term": .string(sighting.term),
                        "camera_description": .string(sighting.text)]
         return event

@@ -2,7 +2,7 @@
 //  SelfHearFilter.swift
 //  CaneKitLogic
 //
-//  Drops a voice transcript that is the app's own recent line, so OpenCane never answers itself.
+//  Drops a voice transcript that is the app's own recent line, so Waymark never answers itself.
 //
 //  Why (Step 55): the first cane-mounted walk logged `conv_error query: "Head height"`. The walker
 //  was dictating, "Head height." (`.safety`) broke through the voice hold as designed, the
@@ -20,7 +20,7 @@
 //
 //  Owner: `VoiceInputEngine` (app) holds one value per press: `AppModel`'s `speech.onDispatch`
 //  hook calls `record(line:at:)` only while the engine is listening or starting (a line dispatched
-//  before the microphone opened — "OpenCane ready.", the help list, an answer — can never be in the
+//  before the microphone opened — "Waymark ready.", the help list, an answer — can never be in the
 //  history, so answering the help list with one of its own words is never dropped); `stopListeningAndSubmit` calls
 //  `shouldDrop(transcript:now:)` and logs `voice_self_hear {action: dropped, transcript,
 //  matched_line}`; `startListening` calls `reset()`.

@@ -34,7 +34,7 @@ struct WatchContentView: View {
     @State private var crown = 0.0
 
     /// `content` inside a `NavigationStack` whose inline title is the distance ("120 m", or
-    /// "OpenCane" while unknown — the phone's -1 sentinel arrives as `nil`) and whose leading
+    /// "Waymark" while unknown — the phone's -1 sentinel arrives as `nil`) and whose leading
     /// toolbar item is the phone-link glyph (green radiowaves when reachable, red `iphone.slash`).
     var body: some View {
         // NavigationStack reserves the clock strip at the top; we spend that strip on the distance
@@ -42,7 +42,7 @@ struct WatchContentView: View {
         // screen without a ScrollView (a ScrollView would take the crown and "Next" never fires).
         NavigationStack {
             content
-                .navigationTitle(model.distanceM.map { "\($0) m" } ?? "OpenCane")
+                .navigationTitle(model.distanceM.map { "\($0) m" } ?? "Waymark")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {

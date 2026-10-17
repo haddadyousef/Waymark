@@ -275,7 +275,7 @@ final class SoundWatcher {
         switch AVAudioApplication.shared.recordPermission {
         case .denied:
             guard lifecycle.beginStart() else { return }
-            fail("Microphone is off for OpenCane. Sound alerts need it.")
+            fail("Microphone is off for Waymark. Sound alerts need it.")
             return
         case .undetermined:
             // The prompt can stay up for as long as the walker likes, and they can turn the
@@ -292,12 +292,12 @@ final class SoundWatcher {
                                                                      generation: permissionGeneration)
                     guard decision == .continueRunning else {
                         if case .stop = decision {
-                            self.fail("Microphone is off for OpenCane. Sound alerts need it.")
+                            self.fail("Microphone is off for Waymark. Sound alerts need it.")
                         }
                         return
                     }
                     guard granted, self.lifecycle.beginStart() else {
-                        self.fail("Microphone is off for OpenCane. Sound alerts need it.")
+                        self.fail("Microphone is off for Waymark. Sound alerts need it.")
                         return
                     }
                     self.startGrantedSession()
@@ -308,7 +308,7 @@ final class SoundWatcher {
             guard lifecycle.beginStart() else { return }
         @unknown default:
             guard lifecycle.beginStart() else { return }
-            fail("Microphone permission is unavailable for OpenCane.")
+            fail("Microphone permission is unavailable for Waymark.")
             return
         }
 
@@ -763,7 +763,7 @@ final class SoundWatcher {
         case .permissionRevoked:
             return "Sound alerts stopped: microphone permission was revoked."
         case .permissionDenied:
-            return "Microphone is off for OpenCane. Sound alerts need it."
+            return "Microphone is off for Waymark. Sound alerts need it."
         }
     }
 

@@ -161,7 +161,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 80)
-    print(" 🦯  OpenCane / CaneKit: Google Street View Route Stimulator (Astra Edition)")
+    print(" 🦯  Waymark / CaneKit: Google Street View Route Stimulator (Astra Edition)")
     print(f" Cadence: {args.cadence:.1f}s per viewpoint | Mode: {'Fast batch' if args.fast else 'Real-time Playback'}")
     print("=" * 80)
 
@@ -305,7 +305,7 @@ def main():
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>OpenCane / Street View Multimodal Perception HUD</title>
+    <title>Waymark / Street View Multimodal Perception HUD</title>
     <style>
         body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0c0f14; color: #f0f3f6; margin: 0; padding: 24px; }}
         h1 {{ margin-top: 0; color: #38bdf8; font-weight: 700; }}
@@ -330,7 +330,7 @@ def main():
     </style>
 </head>
 <body>
-    <h1>🦯 OpenCane: Real-Time Street View Stimulator & Astra Vision HUD</h1>
+    <h1>🦯 Waymark: Real-Time Street View Stimulator & Astra Vision HUD</h1>
     <div class="subtitle">Autonomous Multimodal Navigation Simulation · ISR Townsend Hall → Campus Instructional Facility (UIUC)</div>
     
     <div class="hud-stats">

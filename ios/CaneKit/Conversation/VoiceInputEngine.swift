@@ -30,7 +30,7 @@
 //      bug here (AGENTS.md "make the invisible visible").
 //
 //  Owner: `AppModel.voiceInput`, built in `AppModel.init` with the app's `SpeechQueue` and
-//  `BeaconEngine`. Callers: `AppModel.toggleVoiceInput(source:)` (GuideCard "Talk to OpenCane",
+//  `BeaconEngine`. Callers: `AppModel.toggleVoiceInput(source:)` (GuideCard "Talk to Waymark",
 //  the Action Button's empty `TalkToOpenCaneIntent`) and `AppModel.startVoiceInput()` (AirPods
 //  double nod — start only, never a toggle). AppModel installs `onTranscriptionFinalized` (→
 //  `ConversationCoordinator.handleQuery`, then `finishProcessing()`), `shouldRestorePlaybackSession`
@@ -96,7 +96,7 @@ private nonisolated final class SpeechBufferBox: @unchecked Sendable {
     /// a finished request alive; `VoiceInputEngine.recognitionRequest` holds it strongly.
     private weak var request: SFSpeechAudioBufferRecognitionRequest?
     /// True while the app is speaking (+ the 0.3 s tail): buffers are dropped, so the recogniser
-    /// never hears OpenCane's own voice (Step 55). A `Mutex` read inside the tap — never an actor hop
+    /// never hears Waymark's own voice (Step 55). A `Mutex` read inside the tap — never an actor hop
     /// from the Core Audio thread (the Step 24 SIGTRAP rule in the ⚠ note above).
     private let paused = Mutex(false)
 
@@ -844,7 +844,7 @@ final class VoiceInputEngine {
         resultsRelay = nil
 
         // Stop every input consumer before releasing the speech hold. Releasing the hold drains
-        // queued guidance immediately, so doing it first could make the recognizer hear OpenCane's
+        // queued guidance immediately, so doing it first could make the recognizer hear Waymark's
         // own line while the `.playAndRecord` engine is still live.
         if microphoneLeaseAcquired {
             let mayRestore = shouldRestorePlaybackSession.map { $0() } ?? true
@@ -870,8 +870,8 @@ final class VoiceInputEngine {
     /// - Parameter isSpeechPermission: true for Speech Recognition, false for the microphone.
     private func denied(speech isSpeechPermission: Bool) {
         let line = isSpeechPermission
-            ? "Speech recognition is off for OpenCane. Allow it in Settings to talk to me."
-            : "The microphone is off for OpenCane. Allow it in Settings to talk to me."
+            ? "Speech recognition is off for Waymark. Allow it in Settings to talk to me."
+            : "The microphone is off for Waymark. Allow it in Settings to talk to me."
         logStart(session: isSpeechPermission ? "speech_denied" : "record_denied", format: nil)
         state = .idle
         speech.say(line, .nav, ttl: 8)

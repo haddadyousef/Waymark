@@ -26,7 +26,7 @@
 //  Callers: `VLMClient.swift` (app) — the provider clients build bodies with `VLMRequest.*`, post
 //  through `post(_:headers:body:)` which calls `VLMResponse.checkStatus`, then parse with
 //  `VLMResponse.*`; `VLMClientFactory` resolves `VLMProvider` from Secrets. "Where am I" passes
-//  `ScenePrompt.text`, the hazard watch `HazardPrompt.text`, "Ask OpenCane" `QuestionPrompt.text(for:)`.
+//  `ScenePrompt.text`, the hazard watch `HazardPrompt.text`, "Ask Waymark" `QuestionPrompt.text(for:)`.
 //  `SpokenDistance` is used by `CueSpeechPolicy`, `ObstacleNamer`, `SpokenPhrases`,
 //  `GroundHazard.spokenLine`, `PeopleAhead`, `AppModel.contextLine` and `LaneGridView`.
 //  Isolation: stateless and nonisolated; the providers call it from their own async tasks.
@@ -50,7 +50,7 @@ public enum VLMProvider: String, Sendable, Codable, CaseIterable {
 
 /// Why a scene description failed. `errorDescription` is loggable (and short enough to speak).
 /// The app's `FallbackVLMClient` treats every case (any error but cancellation) as "try on-device
-/// instead"; the "Ask OpenCane" path calls the cloud client directly and has no fallback.
+/// instead"; the "Ask Waymark" path calls the cloud client directly and has no fallback.
 public enum VLMError: Error, Equatable, LocalizedError {
     /// Non-2xx status and the provider's error message (or the first 200 bytes of the body).
     case http(Int, String)

@@ -9,7 +9,7 @@
 //  word the recogniser can mishear must never ring a real person on its own. Two utterances, a
 //  short window, and the number read back before the call — so a walker who said "emergency" by
 //  mistake hears exactly who would be called and can say no. The `tel:` URL is opened by the app
-//  (`UIApplication.open`), which leaves OpenCane; the trip log is flushed first.
+//  (`UIApplication.open`), which leaves Waymark; the trip log is flushed first.
 //
 //  Key invariants:
 //    · Never dials on one word: `emergency()` only ever returns `.prompt` or `.noContact`.

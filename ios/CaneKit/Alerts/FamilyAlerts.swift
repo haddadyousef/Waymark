@@ -214,7 +214,7 @@ final class FamilyAlerts {
             return line
         }
         let (event, prompt) = prepare(FamilyAlertPolicy.fall(lat: lat, lng: lng,
-                                                             note: "Test event from OpenCane"))
+                                                             note: "Test event from Waymark"))
         let line = await deliver(event, prompt: prompt, client: client).summary
         lastStatus = line
         return line

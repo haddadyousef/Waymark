@@ -2,7 +2,7 @@
 //  VLMClient.swift
 //  CaneKit
 //
-//  Pluggable vision-language providers for "Where am I", the hazard watch, "Ask OpenCane" and the
+//  Pluggable vision-language providers for "Where am I", the hazard watch, "Ask Waymark" and the
 //  conversational assistant. Request bodies and response parsing live in CaneKitLogic
 //  (VLMRequest / VLMResponse, unit-tested); this file is only transport, key plumbing and the
 //  cloud → on-device fallback. Provider order when `VLM_PROVIDER` is empty: custom (Muse) →
@@ -113,7 +113,7 @@ nonisolated protocol VLMClient: Sendable {
     var hazardCloudDeadline: Duration? { get }
     /// The cloud client inside this one, or nil when there is none.
     ///
-    /// Used by "Ask OpenCane" (`SceneDescriber.run`) and by `ConversationCoordinator` (a free-form
+    /// Used by "Ask Waymark" (`SceneDescriber.run`) and by `ConversationCoordinator` (a free-form
     /// query with no cloud client gets one honest "I need a network model" line). It exists
     /// because those paths must NOT fall back silently.
     /// `describe(jpeg:prompt:)` on a `FallbackVLMClient` answers a failed cloud call with the
@@ -133,7 +133,7 @@ nonisolated protocol VLMClient: Sendable {
     /// direction to fail in).
     var cloudPrimary: (any VLMClient)? { get }
     /// One image + a prompt → text. `prompt` is `ScenePrompt.text` for "Where am I",
-    /// `HazardPrompt.text` for the hazard watch, `QuestionPrompt.text(for:)` for "Ask OpenCane" and
+    /// `HazardPrompt.text` for the hazard watch, `QuestionPrompt.text(for:)` for "Ask Waymark" and
     /// a `ConversationPrompt.buildUserPrompt` string for the assistant. Throws `VLMError` (HTTP
     /// status, malformed body) or `URLError` (transport, 18 s request / 25 s total timeout; 2.5 s
     /// `timedOut` for a hazard prompt inside `FallbackVLMClient`).
@@ -185,7 +185,7 @@ nonisolated struct FallbackVLMClient: VLMClient {
     var name: String { "\(primary.name) + \(fallback.name)" }
     /// What `SceneDescriber` speaks when `CloudSceneGate` refuses the cloud sentence.
     var onDeviceFallback: (any VLMClient)? { fallback }
-    /// The cloud half, which "Ask OpenCane" asks directly so a cloud failure is reported rather
+    /// The cloud half, which "Ask Waymark" asks directly so a cloud failure is reported rather
     /// than answered by the on-device describer (see the protocol's doc comment).
     var cloudPrimary: (any VLMClient)? { primary.cloudPrimary }
 

@@ -195,8 +195,8 @@ private func idle(cloud: String? = "Muse") -> SceneEngineFacts {
 @Test func lightRowNamesWhoLitTheTorch() {
     var f = idle()
     f.lightState = .dark; f.ambientLux = 12; f.torchOn = true; f.torchByApp = true
-    #expect(SceneEngineSummary.light(f).text == "Light: dark (12 lux) · flashlight on (by OpenCane)")
-    #expect(SceneEngineSummary.light(f).spoken == "Light: dark, 12 lux. Flashlight on, switched on by OpenCane.")
+    #expect(SceneEngineSummary.light(f).text == "Light: dark (12 lux) · flashlight on (by Waymark)")
+    #expect(SceneEngineSummary.light(f).spoken == "Light: dark, 12 lux. Flashlight on, switched on by Waymark.")
     f.torchByApp = false
     #expect(SceneEngineSummary.light(f).text == "Light: dark (12 lux) · flashlight on")
 }

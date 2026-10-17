@@ -137,7 +137,7 @@ final class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
 
     // MARK: Lifecycle
 
-    /// True when the user refused (or a profile restricts) location for OpenCane. Read straight
+    /// True when the user refused (or a profile restricts) location for Waymark. Read straight
     /// from CoreLocation, so it is right on the very first route (review: the `denied` flag is only
     /// set by a live update, which never comes when denied). Caller:
     /// `AppModel.announceLocationDenied` (route refusal in `beginRoute` / `buildRoute`).
@@ -158,7 +158,7 @@ final class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
     /// True while a `CLBackgroundActivitySession` is armed — i.e. the route runs on When-In-Use
     /// authorization and iOS is drawing its blue location pill in the Dynamic Island (which demotes
     /// the Live Activity to the minimal bubble). False with Always authorization, where background
-    /// fixes need no session and the island belongs to OpenCane. Read by the Scene engine / trip log.
+    /// fixes need no session and the island belongs to Waymark. Read by the Scene engine / trip log.
     private(set) var backgroundSessionArmed = false
 
     /// "always" / "whenInUse" / "denied" / "restricted" / "notDetermined", for the trip log and the UI.
@@ -181,7 +181,7 @@ final class LocationService: NSObject, @MainActor CLLocationManagerDelegate {
     /// Ask for Always on top of When In Use (Step 47). Why: a route runs with the screen locked;
     /// a When-In-Use app keeps receiving fixes only through a `CLBackgroundActivitySession`, and
     /// that session makes iOS draw the blue location pill in the Dynamic Island — which is what
-    /// pushed OpenCane's own Live Activity into the minimal bubble on the owner's phone (pictures
+    /// pushed Waymark's own Live Activity into the minimal bubble on the owner's phone (pictures
     /// 2026-09-12 21:48: a blue arrow in the pill, our head-height glance in a detached circle).
     /// Apple Maps and Google Maps own the island because they hold Always. iOS shows the upgrade
     /// prompt once (and may grant provisional Always first); a walker who declines keeps today's

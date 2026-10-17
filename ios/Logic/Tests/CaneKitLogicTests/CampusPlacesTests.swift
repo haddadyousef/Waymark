@@ -22,7 +22,7 @@
 //    · The gazetteer's CIF and ISR entries must equal the route file's last / first waypoint
 //      (read through #filePath, like `shippedRouteFileIsConsistent`).
 //    · The place ids are also the raw values of the app's `CampusDestination` AppEnum (Siri
-//      "Take me to Grainger in OpenCane"); `campusPlaceIdsArePinned` guards that contract.
+//      "Take me to Grainger in Waymark"); `campusPlaceIdsArePinned` guards that contract.
 //
 
 import Foundation
