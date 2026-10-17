@@ -1,3 +1,8 @@
+<!-- waymark:begin -->
+## Waymark (read first)
+This fork adds "sidewalk memory". Before any change: read `waymark/docs/WAYMARK_PLAN.md`, then `waymark/docs/WAYMARK_DESIGN.md`, then `waymark/docs/DECISIONS.md`. Check `waymark/docs/STATUS_W.md` and `STATUS_M.md` for the other side's newest entry and compare the repo hash. Waymark Swift code lives in `ios/Logic/Sources/CaneKitLogic/Waymark/` and `ios/CaneKit/Waymark/`. Mac owns `ios/**`; Windows owns `waymark/**` except `STATUS_M.md` and `M_NOTES.md`. Commits start with `waymark:`. Waymark never speaks at `.safety` or `.nav` priority and never delays a base-app safety cue.
+<!-- waymark:end -->
+
 # CaneKit — Claude Code project rules
 
 Read `AGENTS.md` first (hard rules, layout, commands, deliberate oddities), then
