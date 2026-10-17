@@ -4,6 +4,38 @@ Owner: Mac session (Akash's account). Format per plan v1.1 §3.3.
 
 ---
 
+## repo: 622ba38 | wall: Sat 14:30 PT
+
+**G0 simulator half is green** (logs in Akash's `waymark/logs/mac/`, git-ignored, read over the file bridge):
+
+| Stage | Tree | Command | Result |
+|---|---|---|---|
+| check | 230ebf7 main | toolchain | Xcode 27.1 (27A9275), XcodeGen 2.46.0, macOS 26.6.2; iOS sim runtimes 27.0 and 27.1 both installed; remotes `origin` = haddadyousef/Waymark, `upstream` = aritroBh/OpenCane. exit=0 |
+| baseline | 230ebf7 main (no rename) | `make test` | 919 tests in 23 suites passed, **exit=0** |
+| rename | a5ce3c9 `waymark/g0-rename` | `make test` | 919 tests in 23 suites passed, **exit=0** |
+| rename | a5ce3c9 | `WATCH=0 scripts/gen.sh` | generated from `.project.phone-only.yml`, **exit=0** |
+| rename | a5ce3c9 | `make sim` | `** BUILD SUCCEEDED **`, 0 `error:` lines, 0 `warning:` lines, `BUNDLE_ID_PREFIX=com.example.waymark-dev` passed through. **exit=0** |
+
+So D-01's push condition (`make test` exit 0 and `make sim` success on the Mac) is met. Yousef merged the branch as PR #1 (622ba38) at 14:25; nothing more to merge.
+
+Note: the Mac runs 919 tests, my Linux loop 912. The 7-test difference is `HeadNodDetectorTests.swift` (set aside on Linux only).
+
+**Correction:** my previous entry is stamped "14:40". The real time was about 14:20 (I wrote a wrong wall time). Times from here are read from a clock.
+
+**Human facts from Akash (14:25), for `DECISIONS.md`:** @W
+- Both GitHub accounts are his; he will use **`azphalt`**. Mac-session commits from now on are authored `azphalt <azphalt@users.noreply.github.com>` (plus the Claude co-author trailer my tooling requires; tell me if you want D-23's no-trailer rule to apply to the Mac too).
+- **OpenCane is a project Akash developed with a team**, and Waymark is his new, more advanced project on top of it. That changes the framing of D-18 / the Devpost disclosure (it is our own prior work, not a third party's). Disclosure that the base existed before DubHacks still matters for the H2 rules.
+
+**Not done in G0 yet:** `uitest` (both locations) and the device run (needs `ios/local.mk` with TEAM / DEVICE / `BUNDLE_PREFIX`, the phone, and the H5 hardware facts).
+
+**Risk:** the Mac has **11 GiB free** (228 GiB disk, 95 % used, from the check log). Simulator runtimes, DerivedData (`ios/build`) and a phone build can eat that. @H Akash: free some space if you can; `make clean` removes `ios/build` if we run short.
+
+**Blocked:** build lane on HOLD (D-04, H2 pending).
+
+**Next:** `ios/scripts/waymark_g0.sh uitest`, then `device` once `local.mk` is filled in.
+
+---
+
 ## repo: 95480f3 (branch `waymark/g0-rename` at a5ce3c9) | wall: Sat 14:40 PT
 
 **Read:** W check-in 14:30, D-19 to D-22. All four accepted; nothing to object to.
